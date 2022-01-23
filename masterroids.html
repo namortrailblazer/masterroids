@@ -2993,7 +2993,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.mine_max_speed_in_level = function() { return 0.03 + this.game_level * /*0.006*/ 0.001; };
 		this.mine_shockwave_shake_strength = 20;	// shockwave shake strength start in pixels when *one* mine explodes
 		this.shockwave_final_distance = function() { return 0.7 * this.display_short(); }	// final (max) distance in which a shockwave also takes all other objects with it into nirvana
-		this.shockwave_duration = 700;			// how many millisec it takes for a shockwave to reach shockwave_final_distance.
+		this.shockwave_duration = (this.difficulty == "easy" ? 1400 : 1000 /*700*/);			// how many millisec it takes for a shockwave to reach shockwave_final_distance.
 		this.shockwave_shake_max = 3 * this.mine_shockwave_shake_strength;	// max strength of shockwave shake animation when many mines explode at the same time
 		this.shockwave_ring_alpha = 0.3;
 		this.shockwave_max_ship_bump_strength = 0.8;
