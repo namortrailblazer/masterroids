@@ -1,6 +1,6 @@
 /*
 kor.calc.js
-version 1.0
+version 1.1
 
 
 A library with classes related to math and calculation.
@@ -71,6 +71,14 @@ if (!kor) kor = {};
 		huge_2PI: 1000 * 2 * Math.PI,
 		rezip_2PI: 0.5 / Math.PI,
 		degreeToRadian: Math.PI / 180,
+
+		copy: function( vec )
+		{
+			return {
+				x: vec.x,
+				y: vec.y
+			};
+		},
 
 		add: function( vec1, vec2 )
 		{
@@ -177,6 +185,17 @@ if (!kor) kor = {};
 			v1 = this.normalize( v1 );
 			v2 = this.normalize( v2 );
 			return Math.acos( v1.x * v2.x + v1.y * v2.y );
+		},
+
+		//! @param angle rotation angle (oriented counter-clockwise, in radian)
+		rotate: function( vec, angle )
+		{
+			var c = Math.cos( angle );
+			var s = Math.sin( angle );
+			return {
+				x: vec.x * c - vec.y * s,
+				y: vec.x * s + vec.y * c
+			};
 		},
 
 		keep_in_rect: function( vec, rect )
@@ -317,6 +336,15 @@ if (!kor) kor = {};
 		{
 			obj.left = vec.x + "px";
 			obj.top = vec.y + "px";
+		},
+
+		/*! Moves from vec_from along the looking direction towards vec_to
+		but only exactly the specified distance, thus staying on the circle around
+		vec_from with radius distance.
+		*/
+		move_towards: function( vec_from, vec_to, distance )
+		{
+			return kor.Vec.add( vec_from, kor.Vec.scale( kor.Vec.normalize( kor.Vec.sub( vec_to, vec_from ) ), distance ) );
 		}
 	}
 
@@ -338,9 +366,30 @@ if (!kor) kor = {};
 		xcenter: function( rect ) { return (rect.right + rect.left) / 2; },
 		ycenter: function( rect ) { return (rect.bottom + rect.top) / 2; },
 
+		center: function( rect ) { return { x: kor.Rect.xcenter( rect ), y: kor.Rect.ycenter( rect ) }; },
+
+		LT: function( rect ) { return { x: rect.left, y: rect.top }; },
+		RT: function( rect ) { return { x: rect.right, y: rect.top }; },
+		LB: function( rect ) { return { x: rect.left, y: rect.bottom }; },
+		RB: function( rect ) { return { x: rect.right, y: rect.bottom }; },
+
+		copy: function( rect )
+		{
+			return { left: rect.left, top: rect.top, right: rect.right, bottom: rect.bottom };
+		},
+
 		offset: function( rect, dx, dy )
 		{
 			return { left: rect.left + dx, top: rect.top + dy, right: rect.right + dx, bottom: rect.bottom + dy };
+		},
+
+		move_center_to: function( rect, vec_or_x, y )
+		{
+			var dx = y != null ? vec_or_x : vec_or_x.x;
+			var dy = y != null ? y : vec_or_x.y;
+			dx -= kor.Vec.xcenter( rect );
+			dy -= kor.Vec.ycenter( rect );
+			return kor.Vec.offset( rect, dx, dy );
 		},
 
 		inflate: function( rect, dx, dy )
@@ -391,6 +440,11 @@ if (!kor) kor = {};
 				{ left: 0, top: 0, right: size_or_x, bottom: y } : size_or_x.offsetWidth ?
 				{ left: 0, top: 0, right: size_or_x.offsetWidth, bottom: size_or_x.offsetHeight } :
 				{ left: 0, top: 0, right: size_or_x.width || size_or_x.x, bottom: size_or_x.height || size_or_x.y };
+		},
+
+		from_circle: function( center, radius )
+		{
+			return { left: center.x - radius, top: center.y - radius, right: center.x + radius, bottom: center.y + radius };
 		},
 
 		set_width_height: function( rect, obj )
@@ -478,5 +532,60 @@ if (!kor) kor = {};
 				right:	Math.floor( rect.right ),
 				bottom:	Math.floor( rect.bottom )
 			};
+		},
+
+		/*! Makes sure that the inner_rect stays inside the outer_rect and reflects
+			it on the sides of the outer_rect, reflecting its movement velocity vector when a wall is hit.
+
+			This method can be called after the inner_rect has been moved manually along its velocity vector.
+			reflect_rect will make sure to put it back into the outer_rect in case the movement moved it outside.
+
+			@param velocity_vec [in, out]	it will be reflected by this function.
+		*/
+		reflect_rect: function( outer_rect, inner_rect, velocity_vec )
+		{
+			var r = kor.Rect.copy( inner_rect );
+
+			var d = r.left - outer_rect.left;
+			if ( d < 0 && velocity_vec.x < 0 )
+			{
+				r = kor.Rect.offset( r, -2 * d, 0 );
+				velocity_vec.x = -velocity_vec.x;
+			}
+
+			d = r.right - outer_rect.right;
+			if ( d > 0 && velocity_vec.x > 0 )
+			{
+				r = kor.Rect.offset( r, -2 * d, 0 );
+				velocity_vec.x = -velocity_vec.x;
+			}
+
+			d = r.top - outer_rect.top;
+			if ( d < 0 && velocity_vec.y < 0 )
+			{
+				r = kor.Rect.offset( r, 0, -2 * d );
+				velocity_vec.y = -velocity_vec.y;
+			}
+
+			d = r.bottom - outer_rect.bottom;
+			if ( d > 0 && velocity_vec.y > 0 )
+			{
+				r = kor.Rect.offset( r, 0, -2 * d );
+				velocity_vec.y = -velocity_vec.y;
+			}
+
+			// sanitize. keep inside.
+			if ( kor.Rect.width( inner_rect ) >= kor.Rect.width( outer_rect ) )
+			{
+				r.left = outer_rect.left;
+				r.right = r.left + kor.Rect.width( inner_rect );
+			}
+			if ( kor.Rect.height( inner_rect ) >= kor.Rect.height( outer_rect ) )
+			{
+				r.top = outer_rect.top;
+				r.bottom = r.top + kor.Rect.height( inner_rect );
+			}
+
+			return r;
 		}
 	}

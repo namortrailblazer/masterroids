@@ -247,7 +247,8 @@ if (!kor) kor = {};
 		this.pos = { x: 0, y: 0 };
 		this.orientation = 0;       				// where the object looks. range 0 - 2*PI. 0 looks up (forward) and higher values rotate counter-clockwise (RHS).
 		this.apply_parent_orientation = true;		// if this child object shall use (true) or ignore (false) the parent flying_object's absolute_orientation.
-		this.scale = 1;
+		this.resize = 1;							// a scaling factor which applies to both, the display scaling as well as collision radius scaling.
+		this.scale = 1;								// this is just a display scaling but does not affect the collision radius. it is additional to the resize scaling.
 
 		this.absolute_pos = { x: 0, y: 0 };
 		this.absolute_orientation = 0;
@@ -268,12 +269,14 @@ if (!kor) kor = {};
 		this.player_inputs = null;			// will be used by the active_actuator_fct if it needs inputs/keys. The caller has to set the right one here by himself.
 
 		// preparing values for act_player_ship:
-		this.a_v_velocity = { x: 0, y: 0 };		// in pixels per millisecond
+		this.a_v_velocity = { x: 0, y: 0 };			// in pixels per millisecond
+		this.velocity_influence_by_collision = 1;	// factor how much the velocity gets influenced by a collision
 		// values for act_shot:
 		this.a_origin_object = null;				// non null if this flying_object has been invoked by another flying_object. (e.g. a shot). so to prevent this flying_object form hitting and destroying its origin_object. and for increasing the origin's score.
 
 		this.score_on_destroy = 0;		// the value of this flying_object that increases the player's score when he destroys it.
-		this.score_on_avoided = 0;
+		this.score_on_avoided = 0;		// score the player gains when he did not explode This flying_object but just avoided getting destroyed by This.
+		this.score_on_hit = 0;			// score the player gains when he did hit This flying_object but actually not destroy it. (in case of destruction, .score_on_destroy will be used only).
 		this.exploded_by = null;		// the flying_object that caused This one to start exploding. can be used as indicator that the object is dead (exploding/exploded), but *only* if the objet can be exploded at all.
 		this.released = false;
 
@@ -363,7 +366,7 @@ if (!kor) kor = {};
 
 					this.active_mode = mode;
 					this.active_mode_object = mode_object;
-					this.active_collision_radius = this.active_sprite.collision_radius;
+					this.active_collision_radius = this.active_sprite.collision_radius * this.resize;
 					this.active_spritekind = this.active_sprite.spritekind;
 					this.active_actuator_fct = mode_object.actuator_fct;
 				}
@@ -397,7 +400,7 @@ if (!kor) kor = {};
 			It is very important to return true when the desired mode is active already.
 			This is important for when an object is being exploded by collision.
 			In case, both colliding objects detect their collisions, both should be
-			able to call xplode() and get true returned so that they can do additional
+			able to call explode() and get true returned so that they can do additional
 			stuff like increasing score.
 			But if set_active_sprite() would return false in case the mode was active already,
 			the 2nd collided object would call explode(), too, like the first one (on both objects),
@@ -409,7 +412,7 @@ if (!kor) kor = {};
 				return true;
 
 			var mode_object = this.modes[mode];
-			if( !mode_object )     // illegal mode specified
+			if( !mode_object )     // unavailable or illegal mode specified
 				return false;
 
 			if( bPlay_sound && this.foGlobals.sounds_on )
@@ -439,9 +442,9 @@ if (!kor) kor = {};
 			this.active_mode = mode;
 			this.active_mode_object = mode_object;
 
-			this.active_sprite.set_pos( this.absolute_pos.x, this.absolute_pos.y, this.scale );
+			this.active_sprite.set_pos( this.absolute_pos.x, this.absolute_pos.y, this.resize * this.scale );
 			this.active_sprite.show( true );
-			this.active_collision_radius = this.active_sprite.collision_radius;
+			this.active_collision_radius = this.active_sprite.collision_radius * this.resize;
 			this.active_spritekind = this.active_sprite.spritekind;
 
 			this.active_actuator_fct = mode_object.actuator_fct;
@@ -459,9 +462,9 @@ if (!kor) kor = {};
 				this.active_sprite = this.active_mode_object.sprite_factory.create ? this.active_mode_object.sprite_factory.create() : this.active_mode_object.sprite_factory().create();
 				this.foGlobals.sprite_collection.add( this.active_sprite );
 
-				this.active_sprite.set_pos( this.absolute_pos.x, this.absolute_pos.y, this.scale );
+				this.active_sprite.set_pos( this.absolute_pos.x, this.absolute_pos.y, this.resize * this.scale );
 				this.active_sprite.show( bWasVisible );
-				this.active_collision_radius = this.active_sprite.collision_radius;
+				this.active_collision_radius = this.active_sprite.collision_radius * this.resize;
 				this.active_spritekind = this.active_sprite.spritekind;
 
 				this.calc_absolute();
@@ -573,11 +576,11 @@ if (!kor) kor = {};
 			// We apply the new absolute coordinates to the active_sprite.
 			if( this.active_sprite )
 			{
-				this.active_sprite.set_pos( this.absolute_pos.x, this.absolute_pos.y, this.scale );
+				this.active_sprite.set_pos( this.absolute_pos.x, this.absolute_pos.y, this.resize * this.scale );
 				if( this.active_sprite.select_circular && this.active_mode_object.select_sprite_on_orientation )
 				{
 					this.active_sprite.select_circular( this.absolute_orientation * kor.Vec.rezip_2PI );
-					this.active_collision_radius = this.active_sprite.collision_radius;
+					this.active_collision_radius = this.active_sprite.collision_radius * this.resize;
 				}
 			}
 		}
@@ -604,11 +607,11 @@ if (!kor) kor = {};
 			// We apply the new absolute coordinates to the active_sprite.
 			if( this.active_sprite )
 			{
-				this.active_sprite.set_pos( this.absolute_pos.x, this.absolute_pos.y, this.scale * s );
+				this.active_sprite.set_pos( this.absolute_pos.x, this.absolute_pos.y, this.resize * this.scale * s );
 				if( this.active_sprite.select_circular && this.active_mode_object.select_sprite_on_orientation )
 				{
 					this.active_sprite.select_circular( this.absolute_orientation * kor.Vec.rezip_2PI );
-					this.active_collision_radius = this.active_sprite.collision_radius;
+					this.active_collision_radius = this.active_sprite.collision_radius * this.resize;
 				}
 			}
 		}
@@ -698,11 +701,12 @@ if (!kor) kor = {};
 			this.detach();
 		}
 
+		// includes the nested relative's scalings stacked up, that is all their .resize and .scale factors.
 		this.get_total_scale = function()
 		{
 			return this.relative_to ?
-				this.relative_to.get_total_scale() * this.scale :
-				this.scale;
+				this.relative_to.get_total_scale() * this.resize * this.scale :
+				this.resize * this.scale;
 		}
 
 		this.remove_collisions_of_kind = function( object_kind )
@@ -850,7 +854,7 @@ if (!kor) kor = {};
 
 			@param filterFn
 			[optional]
-			a function ( foNear, foCaller ) that returns true if to accept foNear as a near object
+			a function ( nearObject, foCaller ) that returns true if to accept nearObject.FO as a near object
 			or false if to reject it and continue search with the next further of the near_objects.
 			foCaller is 'this' flying_object which invoked the filter function.
 		*/
@@ -863,7 +867,7 @@ if (!kor) kor = {};
 					{
 						var n = this.near_objects[i];
 						if( sprite_kinds.indexOf( n.FO.active_spritekind ) >= 0 &&
-							filterFn( n.FO, this ) )
+							filterFn( n, this ) )
 						{
 							return n;
 						}
@@ -920,6 +924,20 @@ if (!kor) kor = {};
 			return this.active_mode_object ? this.active_mode_object.invulnerable : false;
 		}
 
+		/*!	Called when the flying object got hit.
+
+			@param FO_by
+			The flying_object that collided with This flying_object and is causing This one to get hit.
+
+			@return
+			true if the object collision was counted as hit actually and thus cause the other one to possibly gain some increase in score.
+			false if the object was not hit or the colllision does not count as hit.
+		*/
+		this.hit = function( FO_by )
+		{
+			return false;
+		}
+
 		/*!
 			@param FO_by
 			The flying_object that collided with This flying_object and is causing This one to explode.
@@ -957,6 +975,29 @@ if (!kor) kor = {};
 		//! @param n the value to increase the score with. May be null which should be interpreted as 0.
 		this.increase_score = function( n )
 		{  }
+
+		//! @return true if colliding
+		this.hit_test_alpha_collision_with = function( fly2 )
+		{
+			if ( this.active_sprite == null || !this.active_sprite.get_image().alpha_collision )
+				// if no alpha_collision is enabled, we treat the whole collision circle area as a hit.
+				return true;
+
+			// Actually we should test all points within the collision circle area.
+			// But for approximation, we just take the forward and backward points.
+			// TODO: Maybe that can be improved by checking more points once we have
+			// an optimized version of sprite's hit_test().
+
+			// If This colliding object has alpha_collision enabled,
+			// we check if the closest point (via collision radius) of the 2nd object lies on an opaque or transparent pixel of This colliding object.
+			if ( this.active_sprite.hit_test( kor.Vec.move_towards( fly2.absolute_pos, this.absolute_pos, fly2.active_collision_radius ) ) )
+				return true;
+			// and also in the opposite looking direction.
+			if ( this.active_sprite.hit_test( kor.Vec.move_towards( fly2.absolute_pos, this.absolute_pos, -fly2.active_collision_radius ) ) )
+				return true;
+
+			return false;
+		}
 	}
 
 
@@ -1012,20 +1053,35 @@ if (!kor) kor = {};
 						var collision_dist = fly1.active_collision_radius + fly2.active_collision_radius;
 						if( dist_sqr < collision_dist * collision_dist )
 						{
-							fly1.collisions.push( fly2 );
+							var skip = false;
+
+							if ( !fly1.hit_test_alpha_collision_with( fly2 ) )
+								skip = true;
+							else if ( !fly2.hit_test_alpha_collision_with( fly1 ) )
+								skip = true;
+
+							if ( !skip )
+								fly1.collisions.push( fly2 );
 						}
 					}
 
 					if( bWantInNearObjects )
 					{
 						if( dist_sqr < outer_dist_sqr )
-							near.push({ distance_sqr: dist_sqr, FO: fly2 });
+						{
+							var dist = Math.sqrt( dist_sqr );
+							dist -= fly1.active_collision_radius + fly2.active_collision_radius;
+							dist = Math.max( dist, 0 );
+							near.push({ distance_sqr: dist_sqr, touch_distance: dist, FO: fly2 });
+							// distance_sqr: squared distance between center points of the flying objects.
+							// touch_distance: distance between touching each other.
+						}
 					}
 				}
 
 				near.sort(function( a, b )
 				{
-					return b.distance_sqr - a.distance_sqr;	// compare near objects
+					return b.touch_distance - a.touch_distance;	// compare near objects
 				});
 
 				fly1.near_objects = near;
@@ -1051,7 +1107,15 @@ if (!kor) kor = {};
 					var collision_dist = fly1.active_collision_radius + fly2.active_collision_radius;
 					if( dist_sqr < collision_dist * collision_dist )
 					{
-						fly1.collisions.push( fly2 );
+						var skip = false;
+
+						if ( !fly1.hit_test_alpha_collision_with( fly2 ) )
+							skip = true;
+						else if ( !fly2.hit_test_alpha_collision_with( fly1 ) )
+							skip = true;
+
+						if ( !skip )
+							fly1.collisions.push( fly2 );
 					}
 				}
 			}

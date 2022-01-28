@@ -286,6 +286,12 @@ if (!kor) kor = {};
 						media.elImage.onload = this.OnLoadedAll;
 						media.elImage.onerror = this.OnErrorAll;
 						media.elImage.src = media.src;
+						// TODO:
+						// we try to prevent "canvas has been tainted by cross-origin data" when trying to ctx.getImageData().
+						// But this only works if the remote server sets the following header appropriately: Access-Control-Allow-Origin "*"
+						// https://stackoverflow.com/questions/22097747/how-to-fix-getimagedata-error-the-canvas-has-been-tainted-by-cross-origin-data
+						//media.elImage.crossOrigin = "Anonymous";
+						//media.elImage.setAttribute( 'crossOrigin', '' );
 						document.body.appendChild( media.elImage );
 					}
 					else
@@ -788,7 +794,8 @@ if (!kor) kor = {};
 						image_filename,
 						width, height,
 						x_hot, y_hot,		//!< [optional] hotspot coordinates
-						collision_radius	//!< [optional] collision radius around the hot spot
+						collision_radius,	//!< [optional] collision radius around the hot spot
+						alpha_collision		//!< [optional] collision is not only on the radius but accounting for alpha channel. Notice: the collision_radius still is of importance during game e.g. for when player ships auto-activate their shield.
 					)
 		{
 			var media = this.mediaRetriever.get({ src: (!kor.Path.isUrlAbsolute(image_filename) && basepath ? basepath + "/" : "") + image_filename, mediatype: "image" });
@@ -800,6 +807,7 @@ if (!kor) kor = {};
 			media.y_hot = (y_hot || 0);
 			media.hot = { x: media.x_hot, y: media.y_hot };
 			media.collision_radius = (collision_radius || 0);
+			media.alpha_collision = (alpha_collision || false);
 			this.images[name] = media;
 			return media;
 		}

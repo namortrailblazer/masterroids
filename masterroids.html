@@ -51,22 +51,29 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	{
 		height: 100%;
 	}
+	/* This is here just to compensate for dark mode browser plugins which usually tweak this which usually is ok but disturbing for the game.
+	Also the colors and opacities spread around in here are marked important solely to compensate for dark mode plugins. */
+	html *
+	{
+		background-color: transparent !important;
+		color: #bbb !important;
+	}
 	body
 	{
 		width: 100%;
 		height: 100%;
 		margin: 0px;
 		padding: 0px;
-		background-color: #000;
+		background-color: #000 !important;
 		font: 11px Verdana;
-		color: #bbb;
+		color: #bbb !important;
 		/* to hide scrollbars, make overflow hidden. But on Firefox, cursor-scrolling still possible, unless position is fixed. */
 		overflow: hidden;
 		position: fixed;    /* unfortunately when fixed, auto-width (width="100%" etc.) does not work anymore for elements. */
 	}
 	canvas#surface
 	{
-		opacity: 1;
+		opacity: 1 !important;
 		-moz-transition-duration: 1s;
 		display: block;
 		margin: auto;
@@ -238,7 +245,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		right: 25px;
 		text-align: right;
 		font: 11px Verdana;
-		color: #bbb;
+		color: #bbb !important;
 		z-index: 8;
 		touch-action: manipulation;		/* prevent browser double tap zoom on touch devices */
 	}
@@ -251,12 +258,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	#InfoPanel .title
 	{
 		font-weight: bold;
-		color: #fff;
-		/*background-color: #304;*/
+		color: #fff !important;
+		/*background-color: #304 !important;*/
 	}
 	#InfoPanel .header
 	{
-		color: #888;
+		color: #888 !important;
 		touch-action: manipulation;		/* prevent browser double tap zoom on touch devices */
 	}
 	#InfoPanel .data
@@ -335,9 +342,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		top: 45%;
 		left: 10%;
 		text-align: center;
-		opacity: .5;
-		filter: alpha(opacity=50);
-		background-color: #444;
+		opacity: .5 !important;
+		filter: alpha(opacity=50) !important;
+		background-color: #444 !important;
 	}
 	#ProgressPanel .container
 	{
@@ -352,22 +359,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	#ProgressPanel .bar
 	{
 		height: 100%;
-		background-color: #000;
+		background-color: #000 !important;
 	}
 	#ProgressPanel .text
 	{
 		position: relative;
 		top: -100%;
 		height: 100%;
-		background-color: transparent;
-		color: #fff;
+		background-color: transparent !important;
+		color: #fff !important;
 		width: 100%;
 	}
 	#ProgressPanel .text td
 	{
 		vertical-align: middle;
 		font: bold 24px Verdana, sans serif;
-		color: #666;
+		color: #666 !important;
 	}
 </style>
 
@@ -410,7 +417,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	}
 	.cmenu .menu_title
 	{
-		color: #999;
+		color: #999 !important;
 		font: bold 10px Verdana;
 		white-space: nowrap;
 		position: absolute;
@@ -433,7 +440,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	.cmenu .menu_title a
 	{
 		text-decoration: underline;
-		color: #bbb;
+		color: #bbb !important;
 	}
 	.cmenu .framecontainer
 	{
@@ -444,11 +451,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	.cmenu .frame
 	{
 		padding: 6px;
-		background-color: #224;
-		color: #bbb;
+		background-color: #224 !important;
+		color: #bbb !important;
 		font: 16px Courier New;
-		opacity: 0.7;
-		filter: alpha(opacity=70);
+		opacity: 0.7 !important;
+		filter: alpha(opacity=70) !important;
 	}
 	.cmenu .frame td
 	{
@@ -458,30 +465,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	}
 	.cmenu .frame td a
 	{
-		color: #bbd;
+		color: #bbd !important;
 		font: 11px Courier New;
 	}
 	.menu_sep { padding: 6px; }
 	.menu_chapter
 	{
 		padding: 2px;
-		color: #ccf;
+		color: #ccf !important;
 		text-align: center;
-		background: #335;
+		background: #335 !important;
 	}
 	.menu_subchapter
 	{
 		padding: 2px;
-		color: #ccf;
+		color: #ccf !important;
 		text-align: center;
 	}
 	.disabled-menu-item
 	{
 		padding: 1px 20px;
-		color: #fff;
+		color: #fff !important;
 		text-align: center;
 		text-decoration: none;
-		background: transparent;
+		background: transparent !important;
 		white-space: nowrap;
 	}
 	.menu-item-unfocused
@@ -490,8 +497,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		padding: 1px 20px;
 		text-align: center;
 		text-decoration: none;
-		color: #fff;
-		background: transparent;
+		color: #fff !important;
+		background: transparent !important;
 		white-space: nowrap;
 		touch-action: manipulation;		/* prevent browser double tap zoom on touch devices */
 	}
@@ -501,8 +508,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		padding: 1px 20px;
 		text-align: center;
 		text-decoration: none;
-		color: #000;
-		background: #fff;
+		color: #000 !important;
+		background: #fff !important;
 		white-space: nowrap;
 		touch-action: manipulation;		/* prevent browser double tap zoom on touch devices */
 	}
@@ -875,7 +882,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		flares: 15,
 		enemy_shot: 16,
 		shockwave: 17,
-		smoke: 18
+		smoke: 18,
+		boss: 19
 	}
 
 	// -- specific (instanciated) sprite factories -------------------------------------
@@ -1102,6 +1110,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.Enemy_Shot_factory = new kor.SpriteFactory( SpriteKinds.enemy_shot, "enemy_shot.png", 18, imageLoader, null, null, 1, "lighter" );
 
 		this.Smoke_factory = new kor.SpriteFactory( SpriteKinds.smoke, "little_cloud.png", 0, imageLoader, null, null, null, null, true );
+
+		this.Boss_factory = new kor.SpriteFactory( SpriteKinds.boss, "boss.png", 1, imageLoader );
 	}
 </script>
 
@@ -1617,32 +1627,32 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <style type="text/css">
 	.player_statistics
 	{
-		background: transparent;
+		background: transparent !important;
 		position: absolute;
 		z-index: 1;
 		font: 15px Verdana;
-		color: #ddd;
+		color: #ddd !important;
 	}
 	.player_stat_text
 	{
 		font: 15px Verdana;
-		color: #ddd;
+		color: #ddd !important;
 	}
 	.player_stat_text td { white-space: nowrap; font: 15px Verdana; }
 	.player_shield_gauge_bk
 	{
-		/*background-color: #363;
-		opacity: 0.6;
-		filter: alpha(opacity=60);*/
-		background-color: #242;
+		/*background-color: #363 !important;
+		opacity: 0.6 !important;
+		filter: alpha(opacity=60) !important;*/
+		background-color: #242 !important;
 		width: 10px;
 	}
 	.player_shield_gauge
 	{
-		/*background-color: #8f8;
-		opacity: 0.4;
-		filter: alpha(opacity=40);*/
-		background-color: #595;
+		/*background-color: #8f8 !important;
+		opacity: 0.4 !important;
+		filter: alpha(opacity=40) !important;*/
+		background-color: #595 !important;
 		width: 10px;
 	}
 </style>
@@ -1774,15 +1784,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		width: 100%;
 		height: 70%;
 		z-index: 2;
-		opacity: 0.5;
-		filter: alpha(opacity=50);
+		opacity: 0.5 !important;
+		filter: alpha(opacity=50) !important;
 		touch-action: manipulation;		/* prevent browser double tap zoom on touch devices */
 	}
 	#new_level_content
 	{
 		padding: 10px 20px;
-		background-color: #103c33;
-		color: #ddfff4;
+		background-color: #103c33 !important;
+		color: #ddfff4 !important;
 		font: bold 30px Verdana;
 		text-align: center;
 		white-space: nowrap;
@@ -1832,14 +1842,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		top: 3px;
 		width: 100%;
 		z-index: 2;
-		opacity: 0.5;
-		filter: alpha(opacity=50);
+		opacity: 0.5 !important;
+		filter: alpha(opacity=50) !important;
 	}
 	#current_level_content
 	{
 		padding: 0px 8px;
-		background-color: #103c33;
-		color: #fff;
+		background-color: #103c33 !important;
+		color: #fff !important;
 		font: 15px Verdana;
 		text-align: center;
 		white-space: nowrap;
@@ -1849,6 +1859,109 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <div id="current_level" style="display: none;">
 	<table width="100%" cellpadding='0' cellspacing='0' border='0'><tr valign="center"><td width="50%"></td><td width="0%">
 		<div id="current_level_content"></div>
+	</td><td width="50%"></td></tr></table>
+</div>
+
+
+
+<!--
+==========================================
+
+	BossStrengthPanel
+
+==========================================
+-->
+<script type="text/javascript">
+	// TODO: display strength processbar in BossStrengthPanel and somewhen create BossStrengthPanel
+	var BossStrengthPanel = function()
+	{
+		this.elPanel = document.getElementById("boss_strength");
+		this.elEnergyGaugeDiv = document.getElementById( "boss_strength_energy_gauge" );
+		this.foBoss = null;
+		this.displayed_energy = -1;
+		this.max_gauge_width = 300;
+
+		this.show = function( bShow )
+		{
+			if ( this.elPanel )
+				this.elPanel.style.display = bShow ? "block" : "none";
+		}
+
+		this.init = function( foBoss )
+		{
+			this.foBoss = foBoss;
+			this.displayed_energy = -1;
+		}
+
+		this.reset = function()
+		{
+			this.foBoss = null;
+			this.displayed_energy = -1;
+		}
+
+		this.update = function()
+		{
+			this.update_energy();
+		}
+
+		this.update_energy = function()
+		{
+			if ( this.elPanel &&
+				 this.foBoss &&
+				 this.foBoss.energy !== this.displayed_energy )
+			{
+				this.displayed_energy = this.foBoss.energy;
+
+				var gauge_width = Math.round( this.max_gauge_width * this.displayed_energy / this.foBoss.max_energy );
+				this.elEnergyGaugeDiv.style.width = gauge_width + "px";
+			}
+		}
+	}
+</script>
+
+<style type="text/css">
+	#boss_strength
+	{
+		background: transparent !important;
+		position: absolute;
+		z-index: 1;
+		left: 0px;
+		top: 30px;
+		width: 100%;
+		height: 10px;
+		opacity: 0.7 !important;
+		filter: alpha(opacity=70) !important;
+	}
+	.boss_energy_gauge_parent
+	{
+		position: relative;
+		width: 300px;
+		text-align: center;
+	}
+	.boss_energy_gauge_bk
+	{
+		position: absolute;
+		left: 0px;
+		width: 100%;
+		background-color: #A00 !important;
+		height: 10px;
+	}
+	.boss_energy_gauge
+	{
+		position: absolute;
+		left: 0px;
+		width: 0px;
+		background-color: #f22 !important;
+		height: 10px;
+	}
+</style>
+
+<div id="boss_strength" style="display: none;">
+	<table width="0"><tr><td width="50%"></td><td width="0%" class="frame">
+		<div class="boss_energy_gauge_parent">
+			<div class='boss_energy_gauge_bk'></div>
+			<div class='boss_energy_gauge' id="boss_strength_energy_gauge"></div>
+		</div>
 	</td><td width="50%"></td></tr></table>
 </div>
 
@@ -1885,15 +1998,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		width: 100%;
 		height: 90%;
 		z-index: 2;
-		opacity: 0.4;
-		filter: alpha(opacity=40);
+		opacity: 0.4 !important;
+		filter: alpha(opacity=40) !important;
 		touch-action: manipulation;		/* prevent browser double tap zoom on touch devices */
 	}
 	#game_over_content
 	{
 		padding: 10px 20px;
-		background-color: #200;
-		color: #ffc;
+		background-color: #200 !important;
+		color: #ffc !important;
 		font: bold 30px Verdana;
 		text-align: center;
 		white-space: nowrap;
@@ -2082,8 +2195,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		top: 0px;
 		width: 0px;
 		height: 0px;
-		opacity: 0.10;
-		filter: alpha(opacity=10);
+		opacity: 0.10 !important;
+		filter: alpha(opacity=10) !important;
 	}
 
 	.navigation_controls .arrows
@@ -2260,7 +2373,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	#highscores_panel td { text-align: center; white-space: nowrap; }
 	#highscores_panel_content
 	{
-		color: #bbb;
+		color: #bbb !important;
 		font: bold 16px Courier New;
 		text-align: center;
 		white-space: nowrap;
@@ -2370,14 +2483,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		top: 10%;
 		width: 100%;
 		z-index: 10;
-		opacity: 0.7;
-		filter: alpha(opacity=70);
+		opacity: 0.7 !important;
+		filter: alpha(opacity=70) !important;
 	}
 	#enter_name_content
 	{
 		padding: 10px 20px;
-		background-color: #224;
-		color: #bbb;
+		background-color: #224 !important;
+		color: #bbb !important;
 		font: bold 16px Courier New;
 		text-align: left;
 		white-space: nowrap;
@@ -2449,7 +2562,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		Flare: 9,
 		Enemy_Shot: 10,
 		Shockwave: 11,
-		Graphic: 12			//!< just a graphical display object
+		Graphic: 12,		//!< just a graphical display object
+		Boss: 13
 	}
 
 	var GameSession = function(
@@ -2557,6 +2671,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.currentLevelPanel.show( false );
 		this.gameOverPanel = new GameOverPanel;
 		this.gameOverPanel.show( false );
+		this.bossStrengthPanel = new BossStrengthPanel;
+		this.bossStrengthPanel.show( false );
 
 		// -- game session maintenance & level start --------------------------------------------------
 
@@ -2575,6 +2691,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			this.newLevelPanel.show( false );
 			this.currentLevelPanel.show( false );
 			this.gameOverPanel.show( false );
+			this.bossStrengthPanel.show( false );
+			this.bossStrengthPanel.reset();
 			this.sceneryPainter.sprite_collection = null;
 
 			// release all old flying_object's
@@ -2644,6 +2762,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			this.comets_count = 0;
 			this.enemies_count = 0;
+
+			this.delayed_call_requests = [];
 
 			this.game_level = 1;		// note: must be set before any player ships and comets are created, because they might need the game_level.
 
@@ -2814,9 +2934,30 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				);
 		}
 
-		//! Last comet died, so the level is finished. We go on to the next level.
+		//! Last comet died, so the level is finished. We go on to the next level, or a boss comes.
 		this.level_finished = function()
 		{
+			if ( this.game_level % this.boss_every_nth_level() == 0 )
+			{
+				this.level_boss_start();
+				return;
+			}
+
+			++this.game_level;
+			this.level_start();
+		}
+
+		this.level_boss_start = function()
+		{
+			this.create_Boss();
+		}
+
+		this.boss_died = function()
+		{
+			this.bossStrengthPanel.show( false );
+			this.bossStrengthPanel.reset();
+
+			// when boss was killed, start next level (like in start_finished on the bottom)
 			++this.game_level;
 			this.level_start();
 		}
@@ -2888,10 +3029,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				}
 			}
 
+			this.do_pending_delayed_calls_now();
+
 			for ( var i = 0 ; i < this.colorful_players_count && i < this.playerStatisticsPanels.length ; ++i )
 				this.playerStatisticsPanels[i].update();
 
 			this.players.reset_keys();
+
+			this.bossStrengthPanel.update();
 		}
 
 		this.pause = function()
@@ -2977,8 +3122,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.computer_player_fly_min_distance_sqr = function() { var d = 0.1 * this.display_mean_length(); return d * d; }
 		this.computer_player_shield_distance_sqr = function( FO, fo2 )
 		{
-			var collrad1 = FO.active_sprite ? FO.active_sprite.collision_radius : 0;
-			var collrad2 = fo2.active_sprite ? fo2.active_sprite.collision_radius : 0;
+			var collrad1 = FO.active_sprite ? FO.active_sprite.collision_radius * FO.resize : 0;
+			var collrad2 = fo2.active_sprite ? fo2.active_sprite.collision_radius * fo2.resize : 0;
 			var d = collrad1 + collrad2 + 20;
 			return d * d;
 		}
@@ -3024,8 +3169,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.enemy_slow_down = 0.0015;
 		this.enemy_acceleration = 0.001;
 		this.enemy_acceleration_no_target = 0.00007;	// acceleration when the enemy has no target
-		this.enemy_max_speed = 0.13;
-		this.enemy_start_speed = this.enemy_max_speed * 0.2;
+		this.enemy_start_speed = 0.026;
 		this.enemy_start_level = 3;
 		this.enemy_appear_delay = function() { return 10000 * Math.random() + (this.difficulty == "easy" ? 2 * 60 * 1000 : 15000); }	// time delay when the next enemy should appear
 		this.time_for_next_enemy_shot = function() { return this.timer.time + 500 * Math.random() + (this.difficulty == "easy" ? 5000 : 200) + 100 * Math.max( 30 - this.game_level, 0 ); }
@@ -3033,20 +3177,31 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.max_enemies_present = function() { return (this.difficulty == "easy" ? 1 : 20); };
 		this.missile_smoke_trail_step_sqr = 10 * 10;	// square of pixel distance between 2 smoke clouds
 		this.missile_smoke_trail_max_rotation = 0.009;
-		if( this.crazy_fun_mode )
+		this.boss_every_nth_level = function() { return 1; }	// TODO: set to 5
+		if ( this.crazy_fun_mode )
 		{
 			this.mine_appear_delay = function() { return 5000 * Math.random() + (this.difficulty == "easy" ? 40 * 1000 : 4000); }
 			this.missile_launch_delay = 0;
 			this.enemy_start_level = 1;
 			this.enemy_appear_delay = function() { return 3000 * Math.random() + (this.difficulty == "easy" ? 30 * 1000 : 2000); }
 			this.time_for_next_enemy_shot = function() { return this.timer.time + 500 * Math.random() + (this.difficulty == "easy" ? 2000 : 100); }
+			this.boss_every_nth_level = function() { return 1; }
 		}
+		this.boss_max_speed_in_level = function() { return Math.min( 0.08 + this.game_level * 0.002, 0.5 ); };
+		this.boss_max_energy_in_level = function() { return 500 * this.players_count + (this.difficulty == "easy" ? 200 : 400) + Math.min( this.game_level * 5, 1000 ); }
+		this.boss_shot_max_speed_in_level = function() { return (this.difficulty == "easy" ? 0.2 : 0.25) + Math.min( this.game_level / 500, 0.1 ); }
+		this.boss_shot_spread_angle_in_level = function() { return 0.22 * Math.PI; }
+		this.time_for_next_boss_shot = function() { return this.timer.time + 200 + (this.difficulty == "easy" ? 500 : 200) + (this.difficulty == "easy" ? 8 : 3) * Math.max( 100 - this.game_level, 0 ); }
+		this.time_for_next_boss_launching_enemy = function() { return this.timer.time + 3000 + ((this.difficulty == "easy" ? 5000 : 0) + 20 * Math.max( 100 - this.game_level, 0 )) / this.players_count; }
+		this.boss_launching_enemy_start_speed = function() { return 0.2; }
 
 		this.comets_count = 0;					//!< current number of comets flying around
 		this.comet_score_value = [20, 30, 50];
 		this.next_comet_index = 0;				//!< index of the next comet in the current level
 
 		this.enemies_count = 0;					//!< current number of enemies flying around
+
+		this.delayed_call_requests = [];		//!< a set of function calls { fn: fn(), start_time } to be called delayed at the desired points in time. will be reset when game ends.
 
 		//! outer index = players count - 1, inner index = player index.
 		//! it contains positions as point object in form of e.g. {x: 0.5, y: 0.5} where the coords have range 0 to 1.
@@ -3582,7 +3737,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			return FO;
 		}
 
-		this.create_Enemy = function()
+		//! @param pos type vector. null to have it start randomly on a viewport edge, otherwise the desired position
+		//! @param orientation radian angle. null to have it start looking into random direction, otherwise the desired direction
+		//! @param velocity type vector. null to have it automatic.
+		this.create_Enemy = function( pos, orientation, velocity )
 		{
 			var FO = new kor.flying_object( this, FlyingObjectKinds.Enemy, true );
 			FO.children = new kor.ordered_dictionary();	// the enemy ship has child flares
@@ -3590,9 +3748,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			FO.set_sprite( FlyingObjectModes.explosion, new kor.flying_object_mode( this.spriteFactories.Explosion_A_factory, this.act_explode, false, this.snd_destroy ) );
 			FO.set_active_sprite( FlyingObjectModes.normal, true );
 			var POR = kor.Vec.rect_border_pos_orientation_range( this.sceneryPainter.surface.display_rect, Math.random() );
-			FO.pos = POR.pos;
-			FO.orientation = POR.pick_orientation( Math.random() );
-			FO.a_v_velocity = kor.Vec.from_orientation( FO.orientation, this.enemy_start_speed );
+			FO.pos = pos == null ? POR.pos : pos;
+			FO.orientation = orientation == null ? POR.pick_orientation( Math.random() ) : orientation;
+			FO.a_v_velocity = velocity == null ? kor.Vec.from_orientation( FO.orientation, this.enemy_start_speed ) : velocity;
 			FO.calc_absolute();
 			FO.near_objects = [];		// we want to get near_objects (the player ships to target on)
 			FO.near_distance_sqr = function() { var d = that.enemy_detect_distance_scale * that.display_long(); return d * d; };
@@ -3656,18 +3814,219 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			FO.pos.x = 0;
 			FO.pos.y = foEnemy.flares_offset;
 			FO.calc_absolute_as_if_relative( foEnemy );
+
 			FO.a_v_velocity = kor.Vec.from_orientation( FO.orientation, 0.4 );
 			if( foEnemy.a_v_velocity )
 				FO.a_v_velocity = kor.Vec.add( FO.a_v_velocity, foEnemy.a_v_velocity );
 			FO.calc_absolute();
+
 			FO.score_on_avoided = 250;
 			FO.explode = function( FO_by ) { this.release(); return false; }
+
 			// now we add a flare to make the shot look more exciting
 			FO.children = new kor.ordered_dictionary();
 			this.create_Flares( FO, 0, 0 );
 			FO.on_exploding = function() { this.release_children(); }
 			FO.on_releasing = function() { this.release_children(); }
 			return FO;
+		}
+
+		this.create_Boss = function()
+		{
+			// TODO: maybe the boss needs to be more circular. because collision works on circles only (i think). can i maybe change that? e.g. base on alpha?
+			var FO = new kor.flying_object( this, FlyingObjectKinds.Boss, false );
+			FO.set_sprite( FlyingObjectModes.normal, new kor.flying_object_mode( this.spriteFactories.Boss_factory, this.act_boss ) );
+			FO.set_sprite( FlyingObjectModes.explosion, new kor.flying_object_mode( this.spriteFactories.Explosion_A_factory, this.act_explode_mine, false, this.snd_destroy ) );
+
+			FO.resize = 0.85;
+			FO.set_active_sprite( FlyingObjectModes.normal );	// needs .resize
+
+			FO.movement_rect = function() {
+				var r = kor.Rect.copy( that.sceneryPainter.surface.display_rect );
+				r.bottom = kor.Rect.ycenter( r ) + this.active_collision_radius;
+				r.top -= this.active_collision_radius;
+				return r;
+			}
+			var r = kor.Rect.deflate( FO.movement_rect(), FO.active_collision_radius );		// needs .set_active_sprite called
+			r.top -= FO.active_collision_radius;
+			FO.pos = kor.Vec.interpolate( kor.Rect.LT( r ), kor.Rect.RT( r ), Math.random() );
+
+			var max_speed = this.boss_max_speed_in_level();
+			var min_speed = max_speed * 0.9;
+			var speed = (max_speed - min_speed) * Math.random() + min_speed;
+
+			// TODO: maybe adjust boss flying animation to be more attacking when going forward
+			FO.a_v_velocity = kor.Vec.from_orientation( Math.PI + Math.PI * 0.5 * (Math.random()- 0.5), speed );
+			FO.a_start_time = this.timer.time;
+			FO.velocity_influence_by_collision = 0;
+			FO.calc_absolute();
+			FO.score_on_hit = 10;
+			FO.score_on_destroy = 0;
+
+			FO.avoid_distance = function() { return this.active_collision_radius * 2; }
+			// TODO: make also a retreat_distance as active_collision_radius * 0.9, where ships shall fly away otherwise they stay too long inside the transparent alpha areas of the boss within the collision_radius and have the shield on alll the time until exhausted
+
+			FO.max_energy = this.boss_max_energy_in_level();
+			FO.energy = FO.max_energy;
+			FO.energy_decrease_on_hit = function() { return 3; }	// TODO: adjust for amount of players (including simulated) and difficulty mode (maybe 4 for easy and 1 for hard) (and maybe crazy fun mode), and increase with level number (because many shots from extras of one player can easily hit the boss multiple times).
+			FO.hit = function( FO_by )
+			{
+				// if hit by a protector or guard or shield, we do not decrease the energy since that kills the boss too quickly and easily
+				if ( FO_by.object_kind == FlyingObjectKinds.Protect || (FO_by.object_kind == FlyingObjectKinds.Player && FO_by.active_mode == FlyingObjectModes.shielded) )
+					return false;
+				if ( this.energy > 0 )
+				{
+					this.energy -= this.energy_decrease_on_hit();
+					that.create_Explosion( FO_by.pos, 2, 1 );
+					return true;
+				}
+				return false;
+			}
+			FO.base_explode = FO.explode;
+			FO.explode = function( FO_by )
+			{
+				if ( this.energy <= 0 )
+				{
+					that.create_Massive_Delayed_Explosions( this.pos, this.active_collision_radius, 300, 1500 );
+					this.base_explode();
+					return true;
+				}
+				return false;
+			}
+			FO.on_exploding = function() { that.boss_died(); }
+
+			FO.time_for_next_shot = this.timer.time + 500;
+			FO.time_for_next_enemy_launch = this.timer.time + 500;
+			FO.enemy_launch_index = 0;
+
+			this.bossStrengthPanel.init( FO );
+			this.bossStrengthPanel.show( true );
+			this.bossStrengthPanel.update();
+
+			return FO;
+		}
+
+		this.create_Boss_Shot = function( foBoss, shot_index )
+		{
+			if ( this.snd_thrust && this.sounds_on )
+				this.snd_thrust.play();
+
+			var FO = new kor.flying_object( this, FlyingObjectKinds.Enemy_Shot, true );
+			FO.set_sprite( FlyingObjectModes.normal, new kor.flying_object_mode( this.spriteFactories.Enemy_Shot_factory, this.act_enemy_shot ) );
+			FO.set_active_sprite( FlyingObjectModes.normal );
+
+			if ( shot_index == 0 )
+				FO.pos = { x: 0, y: 110 };
+			else if ( shot_index == 1 )
+				FO.pos = { x: -118, y: 118 };
+			else if ( shot_index == 2 )
+				FO.pos = { x: 118, y: 118 };
+			else if ( shot_index == 3 )
+				FO.pos = { x: -184, y: 336 };
+			else if ( shot_index == 4 )
+				FO.pos = { x: 184, y: 336 };
+
+			FO.calc_absolute_as_if_relative( foBoss );
+
+			//var orientation = Math.PI + 0.5 * Math.PI * (Math.random() - 0.5);
+			var orientation = Math.PI + this.boss_shot_spread_angle_in_level() * Math.sin( Math.PI * this.timer.time * 0.0001 + shot_index );
+			FO.a_v_velocity = kor.Vec.from_orientation( orientation, this.boss_shot_max_speed_in_level() );
+			// we don't add speed of boss because it looks nicer for the spread of shots flying around and for human players to predict.
+			//if ( foBoss.a_v_velocity )
+			//	FO.a_v_velocity = kor.Vec.add( FO.a_v_velocity, foBoss.a_v_velocity );
+			FO.calc_absolute();
+
+			FO.score_on_avoided = 250;
+			FO.explode = function( FO_by ) { this.release(); return false; }
+
+			// now we add a flare to make the shot look more exciting
+			FO.children = new kor.ordered_dictionary();
+			this.create_Flares( FO, 0, 0 );
+			FO.on_exploding = function() { this.release_children(); }
+			FO.on_releasing = function() { this.release_children(); }
+			return FO;
+		}
+
+		//! Does not start the enemy when launch-pos is outside viewport rect
+		this.create_Enemy_from_Boss = function( foBoss, pos_index )
+		{
+			var pos;
+			var velocity;
+			if ( pos_index == 1 )
+			{
+				pos = { x: -190, y: -106 };
+				velocity = { x: -this.boss_launching_enemy_start_speed(), y: 0 };
+			}
+			else if ( pos_index == 2 )
+			{
+				pos = { x: 190, y: -106 };
+				velocity = { x: this.boss_launching_enemy_start_speed(), y: 0 };
+			}
+			else
+			{
+				// shouldn't occur. just to be complete and have the values initialized.
+				pos = { x: 0, y: -199 };
+				velocity = { x: 0, y: 0 };
+			}
+
+			// if launch-pos is outside the viewport, we do not launch an enemy, otherwise it would
+			// immediately jump to the bottom edge of the viewport which looks strange because it is then far away from the boss.
+			var p = kor.Vec.add( foBoss.pos, kor.Vec.scale( pos, foBoss.resize * foBoss.scale ) );
+			if ( !kor.Vec.is_in_rect( p, that.sceneryPainter.surface.display_rect ) )
+				return null;
+
+			var FO = this.create_Enemy( pos, Math.PI, velocity );
+
+			FO.calc_absolute_as_if_relative( foBoss );
+			FO.calc_absolute();
+
+			return FO;
+		}
+
+		// explosion_size: 0 = explosion A, 1 = explosion B, 2 = explosion C
+		// scale: scaling of the sprite, just graphical
+		this.create_Explosion = function( pos, explosion_size, scale )
+		{
+			var FO = new kor.flying_object( this, FlyingObjectKinds.Graphic, false );
+			FO.set_sprite( FlyingObjectModes.explosion, new kor.flying_object_mode( this.spriteFactories.Explosion_factories[ explosion_size ], this.act_explode, false, this.snd_destroy ) );
+			FO.pos = pos;
+			FO.scale = scale;
+			FO.set_active_sprite( FlyingObjectModes.explosion, true );
+
+			FO.a_start_time = this.timer.time;
+			FO.calc_absolute();
+			return FO;
+		}
+
+		this.create_Massive_Delayed_Explosions = function( pos, radius, amount, duration )
+		{
+			for ( var i = 0; i < amount; ++i )
+			{
+				this.delayed_call_requests.push( {
+					fn: function() {
+						var p = kor.Vec.from_orientation( kor.Vec.twoPI * Math.random(), radius * Math.random() );
+						that.create_Explosion( kor.Vec.add( pos, p ), Math.random() < 0.7 ? 0 : 1, 1 + 0.5 * Math.random() );
+					},
+					start_time: that.timer.time + duration * Math.random()
+				});
+			}
+		}
+
+		this.do_pending_delayed_calls_now = function()
+		{
+			if ( this.delayed_call_requests.length > 0 )
+			{
+				var remaining = [];
+				for ( var i = 0; i < this.delayed_call_requests.length; ++i )
+				{
+					var req = this.delayed_call_requests[i];
+					if ( req.start_time <= this.timer.time )
+						req.fn();
+					else
+						remaining.push( req );
+				}
+				this.delayed_call_requests = remaining;
+			}
 		}
 
 		// -- actuators ---------------------------------------------------------
@@ -3681,7 +4040,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		// if a target ship is shielded so that it does not aim on it anymore but looks for another ship
 		// to aim on, then remove SpriteKinds.playershield from kinds_for_dangers_target.
 
-		this.kinds_for_computer_players_target = [SpriteKinds.playership, SpriteKinds.mine, SpriteKinds.comet, SpriteKinds.danger, SpriteKinds.enemy];
+		this.kinds_for_computer_players_target = [SpriteKinds.playership, SpriteKinds.mine, SpriteKinds.comet, SpriteKinds.danger, SpriteKinds.enemy, SpriteKinds.boss];
 
 		//! @param FO the flying_object
 		this.act_just_fly = function( FO )
@@ -3795,7 +4154,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			{
 				var n = FO.get_nearest_object_data_of_sprite_kinds(
 					[SpriteKinds.extra],
-					function( foNear, foCaller ) { return foNear.extra_taken_fct && foNear.extra_taken_fct( FO, true ); }
+					function( nearObject ) { return nearObject.FO.extra_taken_fct && nearObject.FO.extra_taken_fct( FO, true ); }
 				);
 				if( n )
 					near_obj = n;
@@ -3852,9 +4211,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				}
 
 				// check when to accelerate
+				var bHunt = true;
+				if ( foNear.avoid_distance != null )
+				{
+					var d = foNear.avoid_distance();
+					if ( near_obj.distance_sqr <= d * d )
+						bHunt = false;
+				}
 				var fly_min_distance_sqr = this.computer_player_fly_min_distance_sqr();
 				var bInFlyingAngle = angle >= -kor.Vec.twoPI * 0.2 && angle <= kor.Vec.twoPI * 0.2;
-				var bMayAccelerate = bInFlyingAngle && (near_obj.distance_sqr >= fly_min_distance_sqr || foNear.extra_taken_fct);		// if we hunt an extra, we accelerate no matter how near we are.
+				var bMayAccelerate = bHunt && bInFlyingAngle && (near_obj.distance_sqr >= fly_min_distance_sqr || foNear.extra_taken_fct);		// if we hunt an extra, we accelerate no matter how near we are.
 				inputs.forewd.down = !inputs.forewd.pressed && bMayAccelerate;
 				inputs.forewd.pressed = bMayAccelerate;		// pressed state is sufficient. down-key event we do not need for accelerating player ship.
 
@@ -3906,7 +4272,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					(this.timer.time >= this.new_level_since + this.new_level_delay * 0.9) &&
 					!kor.Vec.is_in_rect( FO.absolute_pos, kor.Rect.deflate(
 						this.sceneryPainter.surface.display_rect,
-						this.spriteFactories.Comet_sprite_factories.get_factory( this.game_level, 0 ).get_first_image().collision_radius +
+						this.spriteFactories.Comet_sprite_factories.get_factory( this.game_level, 0 ).get_first_image().collision_radius +	// we do not need to consider a .resize of the biggest comet (coming up when the level actually will start soon)  because they have no .resize value set other than 1.
 						FO.active_collision_radius +
 						5
 					 ))
@@ -3922,7 +4288,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				inputs.shield.down = inputs.shield.pressed = false;
 		}
 
-		//! @param FO the flying_object
+		//! @param FO the flying_object of the player (maybe even simulated player)
 		this.act_player_ship = function( FO )
 		{
 			if( FO.warping_in )
@@ -3949,9 +4315,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			if( FO.collisions.length )
 			{
 				var foCollided = FO.collisions[0];
-				if( foCollided.explode( FO ) )
+
+				if ( foCollided.hit( FO ) )
+					FO.increase_score( foCollided.score_on_hit );
+				if ( foCollided.explode( FO ) )
 					FO.increase_score( foCollided.score_on_destroy );
-				if( FO.explode( foCollided ) )
+
+				if ( FO.hit( foCollided ) )
+					foCollided.increase_score( FO.score_on_hit );
+				if ( FO.explode( foCollided ) )
 				{
 					foCollided.increase_score( FO.score_on_destroy );
 					return;
@@ -3984,7 +4356,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				that.fire_player( FO );
 		}
 
-		//! @param FO the flying_object
+		//! @param FO the flying_object of the player (maybe even simulated player)
 		this.act_player_shielded = function( FO )
 		{
 			// Same warping code path as for act_player_ship(), because during warping the player may activate the shield.
@@ -4014,6 +4386,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				var foCollided = FO.collisions[0];
 				var vec;
 
+				foCollided.hit( FO );		// it should be unfair to increase FO's score just when FO over the collided object. so just hit but without increasing the score.
 				if( !foCollided.explode( FO ) )
 				{
 					// if the colliding object is not explodable (e.g. like a shot), we play our hit sound
@@ -4024,8 +4397,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						kor.Vec.normalize( foCollided.a_v_velocity ),
 						kor.Vec.normalize( kor.Vec.sub( FO.absolute_pos, foCollided.absolute_pos ) )
 					), 0.03 );
+					// TODO: i think the push off speed is too slow when colliding with a Boss because it is so
+					// big in collision radius. Better would be to include the collision radii in the calculation.
 
-					foCollided.a_v_velocity = kor.Vec.sub( foCollided.a_v_velocity, vec );
+					foCollided.a_v_velocity = kor.Vec.sub( foCollided.a_v_velocity, kor.Vec.scale( vec, foCollided.velocity_influence_by_collision ) );
 					FO.increase_score( foCollided.score_on_avoided );
 				}
 				else
@@ -4037,7 +4412,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				// get the direction to the collision object and add acceleration
 				// a bit in the other direction. Also add a bit of rotation.
 				FO.orientation = (FO.orientation + (Math.random() - 0.5) * 0.6 + kor.Vec.huge_2PI) % kor.Vec.twoPI;
-				FO.a_v_velocity = kor.Vec.add( FO.a_v_velocity, vec );
+				FO.a_v_velocity = kor.Vec.add( FO.a_v_velocity, kor.Vec.scale( vec, FO.velocity_influence_by_collision ) );
 			}
 
 			if ( FO.player.isComputerPlayer )
@@ -4076,6 +4451,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				{
 					// The player lost his last life.
 					FO.release();
+
+					that.delayed_call_requests = [];
 
 					// If the last player died -> game over
 					if ( that.players.decreaseGetAlivePlayerCount( FO.player.isComputerPlayer ) <= 0 )
@@ -4164,14 +4541,16 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			if( FO.collisions.length )
 			{
 				var foCollided = FO.collisions[0];
-				if( foCollided.explode( FO ) )
+				if ( foCollided.hit( FO ) )
+					FO.a_origin_object.increase_score( foCollided.score_on_hit );
+				if ( foCollided.explode( FO ) )
 				{
-					if( FO.a_origin_object )
+					if ( FO.a_origin_object )		// FO.a_origin_object is the player
 						FO.a_origin_object.increase_score( foCollided.score_on_destroy );
 				}
 				else
 				{
-					if( FO.a_origin_object )
+					if ( FO.a_origin_object )
 						FO.a_origin_object.increase_score( foCollided.score_on_avoided );
 				}
 				FO.release();
@@ -4195,8 +4574,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			if( FO.collisions.length )
 			{
 				var foCollided = FO.collisions[0];
-				if( foCollided.explode( FO ) )
-					if( FO.a_origin_object )
+				if ( foCollided.hit( FO ) )
+					FO.a_origin_object.increase_score( foCollided.score_on_hit );
+				if ( foCollided.explode( FO ) )
+					if ( FO.a_origin_object )			// FO.a_origin_object is the player
 						FO.a_origin_object.increase_score( foCollided.score_on_destroy );
 				FO.explode();
 				return;
@@ -4319,6 +4700,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 						bGuardDied = true;
 					}
 
+				foCollided.hit( FO );		// it should be unfair to increase FO's score just when FO over the collided object. so just hit but without increasing the score.
 				if( !foCollided.explode( FO ) )
 				{
 					// if the colliding object is not explodable, we play our hit sound
@@ -4502,7 +4884,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			{
 				var s = (that.timer.time - FO.creation_time) / that.shockwave_duration;	// 0 at beginning, 1 at end of shockwave
 				var d = FO.near_distance();
-				FO.scale = d / FO.active_sprite.collision_radius;
+				FO.scale = d / (FO.active_sprite.collision_radius * FO.resize);
 				FO.active_sprite.globalAlpha = (1 - s) * that.shockwave_ring_alpha;
 			}
 
@@ -4527,6 +4909,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 					if( FO.shocked_objects.indexOf( foNear ) < 0 )
 					{
 						FO.shocked_objects.push( foNear );
+						foNear.hit( FO );		// just to be complete
 						if( foNear.explode( FO ) )
 						{
 							if( FO.origin_for_score )
@@ -4546,7 +4929,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 								var s = (that.timer.time - FO.creation_time) / that.shockwave_duration;	// 0 at beginning, 1 at end of shockwave
 								s = 1 - s;
 								s *= s;
-								var vec = kor.Vec.scale( kor.Vec.normalize( kor.Vec.sub( foNear.absolute_pos, FO.absolute_pos ) ), that.shockwave_max_ship_bump_strength * s );
+								var vec = kor.Vec.scale( kor.Vec.normalize( kor.Vec.sub( foNear.absolute_pos, FO.absolute_pos ) ), that.shockwave_max_ship_bump_strength * s * foNear.velocity_influence_by_collision );
 								foNear.a_v_velocity = kor.Vec.add( foNear.a_v_velocity, vec );
 								foNear.orientation = (foNear.orientation + (Math.random() - 0.5) * 1.1 + kor.Vec.huge_2PI) % kor.Vec.twoPI;
 							}
@@ -4612,10 +4995,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				FO.a_v_velocity = kor.Vec.add( FO.a_v_velocity, v_accel );
 			}
 
-			var velocity = kor.Vec.length( FO.a_v_velocity );
-			if( velocity > that.enemy_max_speed )
-				FO.a_v_velocity = kor.Vec.scale( FO.a_v_velocity, that.enemy_max_speed / velocity );
-
 			FO.pos = kor.Vec.keep_in_rect( kor.Vec.add( FO.pos, kor.Vec.scale( FO.a_v_velocity, that.timer.delta_t ) ), that.sceneryPainter.surface.display_rect );
 		}
 
@@ -4634,6 +5013,38 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			if( !kor.Vec.is_in_rect( FO.pos, that.sceneryPainter.surface.display_rect ) )
 				FO.release();
+		}
+
+		//! @param FO the flying_object being the boss
+		this.act_boss = function( FO )
+		{
+			var outer_rect = FO.movement_rect();
+			var boss_bounds_rect = kor.Rect.from_circle( FO.pos, FO.active_collision_radius );
+			var move = kor.Vec.scale( FO.a_v_velocity, that.timer.delta_t );
+			boss_bounds_rect = kor.Rect.offset( boss_bounds_rect, move.x, move.y );
+			boss_bounds_rect = kor.Rect.reflect_rect( outer_rect, boss_bounds_rect, FO.a_v_velocity );
+			FO.pos = kor.Rect.center( boss_bounds_rect );
+
+			// check if/when to invoke next shot
+			if ( that.timer.time >= FO.time_for_next_shot )
+			{
+				that.create_Boss_Shot( FO, 1 );
+				that.create_Boss_Shot( FO, 2 );
+				that.create_Boss_Shot( FO, 3 );
+				that.create_Boss_Shot( FO, 4 );
+				FO.time_for_next_shot = that.time_for_next_boss_shot();
+			}
+
+			// check when to launch another enemy
+			if ( that.timer.time >= FO.time_for_next_enemy_launch )
+			{
+				var foEnemy = that.create_Enemy_from_Boss( FO, FO.enemy_launch_index++ % 2 + 1 );
+				if ( foEnemy != null )
+					// just for fun
+					that.create_Explosion( foEnemy.pos, 2, 1 );
+
+				FO.time_for_next_enemy_launch = that.time_for_next_boss_launching_enemy();
+			}
 		}
 
 		// -- extra taken event handlers ---------------------------------------------------
@@ -4817,7 +5228,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				for( var src in image_data )
 				{
 					var d = image_data[src];
-					this.imageLoader.load( src, src, d.width, d.height, d.x_hot, d.y_hot, d.collision_radius );
+					this.imageLoader.load( src, src, d.width, d.height, d.x_hot, d.y_hot, d.collision_radius, d.alpha_collision );
 				}
 			}
 

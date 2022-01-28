@@ -1,6 +1,6 @@
 /*
 kor.sprite.js
-version 1.0
+version 1.1
 
 
 A sprite library useful in javascript games.
@@ -73,6 +73,10 @@ if (!kor) kor = {};
 									you can do that by adjusting the hotspot, e.g. using the hot_offset function.
 	.hot_offset						A { x, y } to adjust the sprite's hotspot point.
 									That is, the offsetting is applied *before* the image is being rotated.
+	.get_alpha_at( vec )			Gets the alpha value of the pixel at the coordinates relative to the hotspot.
+	.hit_test( vec )				Tests if the pixel at the coordinates relative to the hotspot can be hit (non-transparent).
+									Use this instead of .get_alpha_at() because in future, we might optimize .hit_test() 
+									for speed by caching and .get_alpha_at() might not get optimized.
 
 	and following some methods/properties which only some sprite classes may contain,
 	maybe even a sprite class has one of these methods/properties (so being non-null) only at specific circumstances.
@@ -202,6 +206,62 @@ if (!kor) kor = {};
 					ctx.restore();
 				}
 			}
+		}
+
+		//! @param vec: a point in absolute coords
+		//! @return true if hit, false if transparent
+		//! @remarks accounts for internal scaling, rotation and translation offsets.
+		this.hit_test = function( vec )
+		{
+			// TODO: optimize for speed by caching alpha points.
+			return this.get_alpha_at( vec ) > 0;
+		}
+
+		//! @param vec: a point in absolute coords
+		//! @return value between 0 and 255
+		//! @remarks accounts for internal scaling, rotation and translation offsets.
+		this.get_alpha_at = function( vec )
+		{
+			if ( !this.is_visible() )
+				return 0;
+
+			vec = kor.Vec.sub( vec, this.pos );
+
+			if ( this.scale )
+				vec = kor.Vec.scale( vec, 1.0 / this.scale );
+
+			if ( this.pos_offset )
+				vec = kor.Vec.sub( vec, this.pos_offset );
+
+			var r = 0;
+			if ( this.rot ) r += this.rot;			// .rot is clockwise, but we want to transform vec into image space and so we have to do the inverse
+			if ( this.sub_rot ) r += this.sub_rot;	// same for .sub_rot
+			if ( r )
+				vec = kor.Vec.rotate( vec, r );
+
+			try
+			{
+				var pix = this.get_image_pixel_at(
+					vec.x + this.image.x_hot + this.hot_offset.x,
+					vec.y + this.image.y_hot + this.hot_offset.y
+				);
+				return pix[3];
+			}
+			catch ( e )
+			{
+				return 255;
+			}
+		}
+
+		//! @return a Uint8ClampedArray of 4 values being RGBA each in range 0 to 255.
+		this.get_image_pixel_at = function( x, y )
+		{
+			var canvas = this.image.getCanvas();
+			if ( !canvas )
+				return [0, 0, 0, 0];
+			var ctx = canvas.getContext( '2d' );
+			var image_data = ctx.getImageData( x, y, 1, 1 );
+			return image_data.data;
 		}
 
 		if( use_rotation )
