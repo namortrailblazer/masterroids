@@ -13,3 +13,4 @@ image_data["t_flare_8.png"] = { width: 41, height: 41, x_hot: 20, y_hot: 20, col
 image_data["t_flare_9.png"] = { width: 41, height: 41, x_hot: 20, y_hot: 20, collision_radius: 0 };
 image_data["waveflare.png"] = { width: 231, height: 231, x_hot: 115, y_hot: 115, collision_radius: 90 };
 image_data["little_cloud.png"] = { width: 32, height: 32, x_hot: 16, y_hot: 16, collision_radius: 0 };
+image_data["boss.png"] = { width: 600, height: 642, x_hot: 300, y_hot: 300, collision_radius: 390, alpha_collision: true };
