@@ -78,6 +78,11 @@ if (!kor) kor = {};
 									Use this instead of .get_alpha_at() because in future, we might optimize .hit_test() 
 									for speed by caching and .get_alpha_at() might not get optimized.
 
+	.image_data						will be created, if get_alpha_at() or hit_test() is used. it is a cache of the image colors
+									holding ctx.getImageData().data.
+									If the browser throws an exception on getImageData() (e.g. because of cross-site image access,
+									which we should not have in our game), this member will not exist as well.
+
 	and following some methods/properties which only some sprite classes may contain,
 	maybe even a sprite class has one of these methods/properties (so being non-null) only at specific circumstances.
 
@@ -196,12 +201,15 @@ if (!kor) kor = {};
 					// Anyway, in firefox, scale(0, 0) seems to stuck rendering (e.g. when a ship wants to warp in).
 					// So if you are using ctx.scale() and you have a scale value of 0, do not call scale() but skip the drawImage() call instead.
 
+					var w = this.image.width * this.scale;
+					var h = this.image.height * this.scale;
+
 					ctx.drawImage(
 						source_canvas,
 						-(this.image.x_hot + this.hot_offset.x) * this.scale,
 						-(this.image.y_hot + this.hot_offset.y) * this.scale,
-						this.image.width * this.scale,
-						this.image.height * this.scale
+						w,
+						h
 					);
 					ctx.restore();
 				}
@@ -239,29 +247,44 @@ if (!kor) kor = {};
 			if ( r )
 				vec = kor.Vec.rotate( vec, r );
 
-			try
-			{
-				var pix = this.get_image_pixel_at(
-					vec.x + this.image.x_hot + this.hot_offset.x,
-					vec.y + this.image.y_hot + this.hot_offset.y
-				);
-				return pix[3];
-			}
-			catch ( e )
-			{
-				return 255;
-			}
+			var a = this.get_image_alpha_at(
+				vec.x + this.image.x_hot + this.hot_offset.x,
+				vec.y + this.image.y_hot + this.hot_offset.y
+			);
+			return a;
 		}
 
 		//! @return a Uint8ClampedArray of 4 values being RGBA each in range 0 to 255.
-		this.get_image_pixel_at = function( x, y )
+		this.get_image_alpha_at = function( x, y )
 		{
+			if ( this.image_data === null )		// indicates not to try ctx.getImageData again.
+				return 255;
+
 			var canvas = this.image.getCanvas();
 			if ( !canvas )
-				return [0, 0, 0, 0];
-			var ctx = canvas.getContext( '2d' );
-			var image_data = ctx.getImageData( x, y, 1, 1 );
-			return image_data.data;
+				return 0;
+
+			var w = canvas.width;
+			var h = canvas.height;
+
+			var i = Math.floor( y ) * 4 * w + Math.floor( x ) * 4;
+
+			if ( this.image_data )
+				return this.image_data[i + 3];
+
+			try
+			{
+				var ctx = canvas.getContext( '2d' );
+				var image_data = ctx.getImageData( 0, 0, w, h );	// ctx.getImageData could fail on cross-site data (which we should not have). to be sure, we catch it.
+				this.image_data = image_data.data;
+
+				return this.image_data[i + 3];
+			}
+			catch ( e )
+			{
+				this.image_data = null;			// indicates not to try ctx.getImageData again.
+				return 255;
+			}
 		}
 
 		if( use_rotation )
