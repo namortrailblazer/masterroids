@@ -3185,7 +3185,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.max_enemies_present = function() { return (this.difficulty == "easy" ? 1 : 20); };
 		this.missile_smoke_trail_step_sqr = 10 * 10;	// square of pixel distance between 2 smoke clouds
 		this.missile_smoke_trail_max_rotation = 0.009;
-		this.boss_every_nth_level = function() { return 1; }	// TODO: set to 5
+		this.boss_every_nth_level = function() { return 5; }
 		if ( this.crazy_fun_mode )
 		{
 			this.mine_appear_delay = function() { return 5000 * Math.random() + (this.difficulty == "easy" ? 40 * 1000 : 4000); }
@@ -3871,7 +3871,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			FO.score_on_hit = 10;
 			FO.score_on_destroy = 0;
 
-			FO.avoid_distance = function() { return this.active_collision_radius * 1.8; }
+			FO.avoid_distance = function() { return this.active_collision_radius * 1.8; }		// within this distance, a simulated player will not accelerate any further towards its aim.
 			FO.retreat_distance = function() { return this.active_collision_radius * 0.93; }	// a retreat distance where ships shall fly away otherwise they stay too long inside the transparent alpha areas of the boss within the collision_radius and have the shield on all the time until exhausted
 
 			FO.max_energy = this.boss_max_energy_in_level();
