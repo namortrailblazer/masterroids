@@ -115,7 +115,8 @@ if (!kor) kor = {};
 		}
 	}
 
-	kor.PanelMenu = function( elMenuBase, keyBoard )
+	//! @param on_show_fn if specified, allows the caller to update the controls state when the menu appears.
+	kor.PanelMenu = function( elMenuBase, keyBoard, on_show_fn )
 	{
 		var that = this;
 
@@ -126,6 +127,7 @@ if (!kor) kor = {};
 		kor.MenuUtils.GetMenuItems( this.elMenu, this.menu_items );
 		this.focused_menu_item_index = -1;
 		this.keyBoard = keyBoard;
+		this.on_show_fn = on_show_fn;
 
 		this.delegateClicked = new kor.Delegate;	//!< add a delegate to this to get informed when any menu item has been clicked (or return pressed)
 		this.delegatesClicked = [];					//!< map of menu item id to delegate, invoked when the according menu item has been clicked (or return pressed)
@@ -243,6 +245,10 @@ if (!kor) kor = {};
 		this.show = function( bShow )
 		{
 			this.elMenu.style.display = bShow ? "block" : "none";
+
+			if ( this.on_show_fn )
+				this.on_show_fn();
+
 			this.focus_menu_item( -1 );
 			this.next();
 		}

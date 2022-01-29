@@ -81,6 +81,14 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		height: 100%;
 		touch-action: manipulation;		/* prevent browser double tap zoom on touch devices */
 	}
+
+	.decor-normal
+	{}
+	.decor-eliminated
+	{
+		text-decoration: line-through red;
+		color: red !important;
+	}
 </style>
 
 <script type="text/javascript" src="images/image_data.js"></script>
@@ -488,6 +496,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		color: #ccf !important;
 		text-align: center;
 	}
+	.menu_small_text
+	{
+		text-align: left;
+		padding-left: 22px;
+		font: 11px Courier New;
+	}
 	.disabled-menu-item
 	{
 		padding: 1px 20px;
@@ -532,6 +546,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	#MainMenu .menu-item-continue
 	{
 		padding: 0.5em;
+	}
+	#MainMenu .decor-normal
+	{}
+	#MainMenu .decor-eliminated
+	{
+		text-decoration: line-through red;
+		color: red !important;
 	}
 </style>
 
@@ -647,13 +668,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		<table cellpadding='0' cellspacing='0' border='0' width='100%' style='padding-top: 8px;'>
 			<tr>
 				<td/>
-				<td class='menu-item-unfocused' data-menu-item-id='menuHighscores'>highscores</td>
+				<td class='menu-item-unfocused decor-normal' data-menu-item-id='menuHighscores'>highscores</td>
 				<td/>
 			</tr>
 			<tr>
 				<td align='center'><a href='README.md' target='_blank'>read me</a></td>
 				<td align='center'><a href='help.html' target='_blank'>help</a></td>
 				<td align='center'><a href='LICENSE' target='_blank'>license</a></td>
+			</tr>
+		</table>
+		<div class='menu_sep'></div>
+		<div class='menu_sep'></div>
+
+		<div class='menu_chapter'>Debug Options <span class='menu-item-unfocused' data-menu-item-id='resetDebugOptions'>&olarr;</span></div>
+		<div class='menu_small_text'>Changing prevents saving new highscores.</br>Resetting requires starting a new game.</div>
+		<table width='100%' cellpadding='0' cellspacing='3' border='0'>
+			<tr>
+				<td style='width: 20em;'>boss every n'th level:</td>
+				<td class='menu-item-unfocused' data-menu-item-id='optDebugBossEveryNthLevel'>0</td>
 			</tr>
 		</table>
 	</td><td width="50%"></td></tr></table>
@@ -1608,11 +1640,23 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 		this.update_score = function()
 		{
-			if (this.elPanel &&
-				this.player.score !== this.displayed.score)
+			if ( this.elPanel &&
+				 this.player.score !== this.displayed.score )
 			{
 				this.displayed.score = this.player.score;
 				this.elScore.innerHTML = this.displayed.score.toString();
+
+				this.update_score_display_style();
+			}
+		}
+
+		// To display the score value red-crossed-out to indicate when debug mode is on and scores will not be saved in this game session anymore.
+		this.update_score_display_style = function()
+		{
+			if ( this.elScore )
+			{
+				var bUsingDebugOptions = theApp.CheckCurrentlyUsingDebugOptions();
+				kor.CssUtils.ReplaceClassName( this.elScore, /decor-\S*/, bUsingDebugOptions ? "decor-eliminated" : "decor-normal" );
 			}
 		}
 
@@ -1674,7 +1718,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<span id="player1_statistics_lifes" style="margin-left: 5px;">0</span>
 			</td>
 			<td>
-				<span id="player1_statistics_score" style="margin-left: 25px;">0</span>
+				<span id="player1_statistics_score" class="decor-normal" style="margin-left: 25px;">0</span>
 			</td>
 		</tr>
 	</table>
@@ -1692,7 +1736,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	<table width='0' cellpadding='0' cellspacing='0' border='0' class='player_stat_text'>
 		<tr valign='center'>
 			<td>
-				<span id="player2_statistics_score" style="margin-right: 25px;">0</span>
+				<span id="player2_statistics_score" class="decor-normal" style="margin-right: 25px;">0</span>
 			</td>
 			<td>
 				<span id="player2_statistics_lifes" style="margin-right: 5px;">0</span>
@@ -1725,7 +1769,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				<span id="player3_statistics_lifes" style="margin-left: 5px;">0</span>
 			</td>
 			<td>
-				<span id="player3_statistics_score" style="margin-left: 25px;">0</span>
+				<span id="player3_statistics_score" class="decor-normal" style="margin-left: 25px;">0</span>
 			</td>
 		</tr>
 	</table>
@@ -1743,7 +1787,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	<table width='0' cellpadding='0' cellspacing='0' border='0' class='player_stat_text'>
 		<tr valign='center'>
 			<td>
-				<span id="player4_statistics_score" style="margin-right: 25px;">0</span>
+				<span id="player4_statistics_score" class="decor-normal" style="margin-right: 25px;">0</span>
 			</td>
 			<td>
 				<span id="player4_statistics_lifes" style="margin-right: 5px;">0</span>
@@ -1880,7 +1924,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ==========================================
 -->
 <script type="text/javascript">
-	// TODO: display strength processbar in BossStrengthPanel and somewhen create BossStrengthPanel
 	var BossStrengthPanel = function()
 	{
 		this.elPanel = document.getElementById("boss_strength");
@@ -2630,6 +2673,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 		this.game_level = 1;
 		this.team_mode = theApp.team_mode;		// if true, team mode is on, meaning that players cannot kill each other
+		this.static_boss_every_nth_level = theApp.static_boss_every_nth_level;
+
+		this.usingDebugOptions = theApp.AppUsingDebugOptions();
 
 		//! A game timer is started at the beginning of a game.
 		//! Each array item is a timer object { enabled: ?, elapse_time: ?, timer_fct: ? }.
@@ -2945,7 +2991,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		//! Last comet died, so the level is finished. We go on to the next level, or a boss comes.
 		this.level_finished = function()
 		{
-			if ( this.game_level % this.boss_every_nth_level() == 0 )
+			if ( this.game_level % this.boss_every_nth_level_fn() == 0 )
 			{
 				this.level_boss_start();
 				return;
@@ -2972,7 +3018,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 		this.game_over = function()
 		{
-			this.game_is_over = true;
+			this.game_is_over = true;					// do that before the on_game_over handler is called, because the handler checks to see if to display the name panel in EnterNextPlayerName.
 			this.gameOverPanel.show( true );
 			//this.currentLevelPanel.show( false );		// we want to see the level when we died
 
@@ -3185,7 +3231,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.max_enemies_present = function() { return (this.difficulty == "easy" ? 1 : 20); };
 		this.missile_smoke_trail_step_sqr = 10 * 10;	// square of pixel distance between 2 smoke clouds
 		this.missile_smoke_trail_max_rotation = 0.009;
-		this.boss_every_nth_level = function() { return 5; }
+		this.boss_every_nth_level_fn = function() { return this.static_boss_every_nth_level; }
 		if ( this.crazy_fun_mode )
 		{
 			this.mine_appear_delay = function() { return 5000 * Math.random() + (this.difficulty == "easy" ? 40 * 1000 : 4000); }
@@ -3193,7 +3239,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			this.enemy_start_level = 1;
 			this.enemy_appear_delay = function() { return 3000 * Math.random() + (this.difficulty == "easy" ? 30 * 1000 : 2000); }
 			this.time_for_next_enemy_shot = function() { return this.timer.time + 500 * Math.random() + (this.difficulty == "easy" ? 2000 : 100); }
-			this.boss_every_nth_level = function() { return 1; }
 		}
 		this.boss_max_speed_in_level = function() { return Math.min( 0.08 + this.game_level * 0.002, 0.5 ); };
 		this.boss_max_energy_in_level = function() { return 500 * this.players_count + (this.difficulty == "easy" ? 200 : 400) + Math.min( this.game_level * 5, 1000 ); }
@@ -3841,7 +3886,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 		this.create_Boss = function()
 		{
-			// TODO: maybe the boss needs to be more circular. because collision works on circles only (i think). can i maybe change that? e.g. base on alpha?
 			var FO = new kor.flying_object( this, FlyingObjectKinds.Boss, false );
 			FO.set_sprite( FlyingObjectModes.normal, new kor.flying_object_mode( this.spriteFactories.Boss_factory, this.act_boss ) );
 			FO.set_sprite( FlyingObjectModes.explosion, new kor.flying_object_mode( this.spriteFactories.Explosion_A_factory, this.act_explode_mine, false, this.snd_destroy ) );
@@ -5227,6 +5271,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.optionsCookie;
 		this.playerStatisticsPanels = [];
 
+		this.default_boss_every_nth_level = 5;
+
 		this.bots = 0;
 		this.max_bots = 20;
 		this.difficulty = "hard";
@@ -5235,6 +5281,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.magnet_mode = false;
 		this.team_mode = false;		// TODO should be put in a settings object
 		this.sounds_on = true;			// TODO should be put in a settings object together with engine statistics on/off. And GameSession.sounds_on has to be adopted, too, then (currently is inited by theApp.sounds_on and updated by OnSoundsOnOff)
+		this.static_boss_every_nth_level = this.default_boss_every_nth_level;	// TODO should probably also be put in a settings object
 
 		this.preload = function()
 		{
@@ -5337,7 +5384,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			this.statisticsPanel = new StatisticsPanel( this.statistics );
 
-			this.MainMenu = new kor.PanelMenu( document.getElementById("MainMenu"), this.keyBoard );
+			this.MainMenu = new kor.PanelMenu( document.getElementById("MainMenu"), this.keyBoard, this.OnShowMainMenu );
 			this.MainMenu.delegatesClicked["optDifficulty"].add( this.OnDifficulty );
 			this.MainMenu.delegatesClicked["optInvincible"].add( this.OnInvincible );
 			this.MainMenu.delegatesClicked["optCrazyFunModeOnOff"].add( this.OnCrazyFunModeOnOff );
@@ -5367,6 +5414,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			this.MainMenu.delegatesClicked["demo3"].add( this.OnStartGame );
 			this.MainMenu.delegatesClicked["demo4"].add( this.OnStartGame );
 			this.MainMenu.delegatesClicked["continue"].add( this.OnGameContinue );
+			this.MainMenu.delegatesClicked["resetDebugOptions"].add( this.OnResetDebugOptions );
+			this.MainMenu.delegatesClicked["optDebugBossEveryNthLevel"].add( this.OnDebugBossEveryNthLevel );
 
 			this.MainMenu.showSection( "MainMenuPaused", false );
 			this.MainMenu.show( true );
@@ -5419,6 +5468,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				try { if (this.optionsCookie.value.sounds_on != null) this.sounds_on = this.optionsCookie.value.sounds_on; } catch( e ) {  }
 				try { if (this.optionsCookie.value.navigation_controls_mode != null) this.navigationControls.activate_mode( this.optionsCookie.value.navigation_controls_mode ); } catch( e ) {  }
 				try { if (this.optionsCookie.value.statisticsPanel_on != null) this.statisticsPanel.show( this.optionsCookie.value.statisticsPanel_on ); } catch( e ) {  }
+				try { if (this.optionsCookie.value.boss_every_nth_level != null) this.static_boss_every_nth_level = this.optionsCookie.value.boss_every_nth_level; } catch( e ) {  }
 				this.UpdateMainMenu();
 			}
 			else
@@ -5472,6 +5522,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			that.gameSession.on_game_over = that.OnGameOver;
 			that.gameSession.start_game( human_players_count, simulate_players, colorful_players_count );
 
+			that.UpdateMainMenu();
 			that.statistics.update();
 			that.statisticsPanel.displayStatistics();
 		}
@@ -5509,6 +5560,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			that.gameSession.on_game_over = that.OnGameOver;
 			that.gameSession.start_game( human_players_count, simulate_players, colorful_players_count );
 
+			that.UpdateMainMenu();
 			that.statistics.update();
 			that.statisticsPanel.displayStatistics();
 		}
@@ -5605,6 +5657,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			that.elMainMenuWithTitle.style.display = "none";
 		}
 
+		this.OnShowMainMenu = function()
+		{
+			that.UpdateMainMenu();
+		}
+
 		this.UpdateMainMenu = function()
 		{
 			this.MainMenu.menu_items_by_menu_id["optBots"].innerHTML = this.bots;
@@ -5616,6 +5673,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			this.MainMenu.menu_items_by_menu_id["optSoundsOnOff"].innerHTML = this.sounds_on ? "on" : "off";
 			this.MainMenu.menu_items_by_menu_id["optSwitchNavigationControls"].innerHTML = this.navigationControls.active_mode;
 			this.MainMenu.menu_items_by_menu_id["optStatisticsOnOff"].innerHTML = this.statisticsPanel.is_visible() ? "on" : "off";
+			this.MainMenu.menu_items_by_menu_id["optDebugBossEveryNthLevel"].innerHTML = this.static_boss_every_nth_level;
+
+			var bUsingDebugOptions = this.CheckCurrentlyUsingDebugOptions();
+			kor.CssUtils.ReplaceClassName( this.MainMenu.menu_items_by_menu_id["menuHighscores"], /decor-\S*/, bUsingDebugOptions ? "decor-eliminated" : "decor-normal" );
 		}
 
 		this.OnBots = function( e )
@@ -5632,6 +5693,54 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			// we don't update a currently running game session. The new selection will only be used when a new game is started.
 			that.UpdateMainMenu();
 			// and we don't store it in the cookies. (maybe in future).
+		}
+
+		//! Notice, this is just the application setting. It does not take a running game session into account.
+		this.AppUsingDebugOptions = function()
+		{
+			return that.static_boss_every_nth_level != that.default_boss_every_nth_level;
+		}
+
+		this.CheckCurrentlyUsingDebugOptions = function()
+		{
+			return that.AppUsingDebugOptions() || (that.gameSession && !that.gameSession.game_is_over && that.gameSession.usingDebugOptions);
+		}
+
+		this.OnResetDebugOptions = function( e )
+		{
+			// reset debug options in app settings
+			that.static_boss_every_nth_level = that.default_boss_every_nth_level;
+
+			// reset debug options also in a running game session
+			if ( that.gameSession )
+				that.gameSession.static_boss_every_nth_level = that.static_boss_every_nth_level;
+
+			that.UpdateMainMenu();
+
+			that.optionsCookie.value.boss_every_nth_level = that.static_boss_every_nth_level;
+			that.optionsCookie.store();
+		}
+
+		this.OnDebugBossEveryNthLevel = function( e )
+		{
+			that.static_boss_every_nth_level--;
+			if ( that.static_boss_every_nth_level <= 0 )
+				that.static_boss_every_nth_level = that.default_boss_every_nth_level * 2;
+
+			if ( that.gameSession )
+			{
+				that.gameSession.static_boss_every_nth_level = that.static_boss_every_nth_level;
+
+				// In a running game session, we mark debug enabled and do never turn it off so that once debug gets activated, and only if
+				// it is for short, we do not save the player highscore progress at all (just for that game session though).
+				if ( !that.gameSession.usingDebugOptions )
+					that.gameSession.usingDebugOptions = that.AppUsingDebugOptions();
+			}
+
+			that.UpdateMainMenu();
+
+			that.optionsCookie.value.boss_every_nth_level = that.static_boss_every_nth_level;
+			that.optionsCookie.store();
 		}
 
 		this.OnDifficulty = function( e )
@@ -5729,8 +5838,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 		this.OnGameOver = function()
 		{
-			// let user(s) enter name and save their player scores in cookies (in case of local game)
-			that.EnterNextPlayerName();
+			// Do not use CheckCurrentlyUsingDebugOptions here, because we shall not rely on the gameSession.game_is_over state
+			// here because it has already been set to true.
+			// But we know here that we arrived at the end of a game session, so we still want to know if the already
+			// passed game session was using debug options.
+			var bWasUsingDebugOptions = that.AppUsingDebugOptions() || (that.gameSession && that.gameSession.usingDebugOptions);
+
+			if ( !bWasUsingDebugOptions )
+				// let user(s) enter name and save their player scores in cookies (in case of local game)
+				that.EnterNextPlayerName();
 		}
 
 		/*!
