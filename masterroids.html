@@ -3871,8 +3871,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			FO.score_on_hit = 10;
 			FO.score_on_destroy = 0;
 
-			FO.avoid_distance = function() { return this.active_collision_radius * 2; }
-			// TODO: make also a retreat_distance as active_collision_radius * 0.9, where ships shall fly away otherwise they stay too long inside the transparent alpha areas of the boss within the collision_radius and have the shield on alll the time until exhausted
+			FO.avoid_distance = function() { return this.active_collision_radius * 1.8; }
+			FO.retreat_distance = function() { return this.active_collision_radius * 0.9; }	// a retreat distance where ships shall fly away otherwise they stay too long inside the transparent alpha areas of the boss within the collision_radius and have the shield on all the time until exhausted
 
 			FO.max_energy = this.boss_max_energy_in_level();
 			FO.energy = FO.max_energy;
@@ -4179,9 +4179,22 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				FO.foAimedByComputer = foNear;
 
 				var dest_direction = kor.Vec.to_orientation( kor.Vec.sub( foNear.absolute_pos, FO.absolute_pos ) );
+
+				var bRetreat = false;
+				if ( foNear.retreat_distance != null )
+				{
+					var d = foNear.retreat_distance();
+					if ( near_obj.distance_sqr <= d * d )
+						bRetreat = true;
+				}
+
+				if ( bRetreat )
+					// retreat into the opposite direction
+					dest_direction = dest_direction + Math.PI;
+
 				var angle = dest_direction - FO.orientation;
-				if( angle < -Math.PI ) angle += kor.Vec.twoPI;
-				if( angle >  Math.PI ) angle -= kor.Vec.twoPI;
+				while ( angle < -Math.PI ) angle += kor.Vec.twoPI;
+				while ( angle >  Math.PI ) angle -= kor.Vec.twoPI;
 
 				var bMayShoot = angle >= -kor.Vec.twoPI * 0.03 && angle <= kor.Vec.twoPI * 0.03;	// && !foNear.extra_taken_fct;	// we want to shoot even at extras. that is not to hit them but to hit other things while being on the way to the extra.
 
@@ -4228,7 +4241,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				}
 				var fly_min_distance_sqr = this.computer_player_fly_min_distance_sqr();
 				var bInFlyingAngle = angle >= -kor.Vec.twoPI * 0.2 && angle <= kor.Vec.twoPI * 0.2;
-				var bMayAccelerate = bHunt && bInFlyingAngle && (near_obj.distance_sqr >= fly_min_distance_sqr || foNear.extra_taken_fct);		// if we hunt an extra, we accelerate no matter how near we are.
+				var bMayAccelerate = bRetreat || (bHunt && bInFlyingAngle && (near_obj.distance_sqr >= fly_min_distance_sqr || foNear.extra_taken_fct));		// if we hunt an extra, we accelerate no matter how near we are.
 				inputs.forewd.down = !inputs.forewd.pressed && bMayAccelerate;
 				inputs.forewd.pressed = bMayAccelerate;		// pressed state is sufficient. down-key event we do not need for accelerating player ship.
 
