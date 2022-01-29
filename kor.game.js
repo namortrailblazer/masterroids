@@ -976,6 +976,7 @@ if (!kor) kor = {};
 		this.increase_score = function( n )
 		{  }
 
+		//! Call this function only when fly2 is within the collision_radius of This object.
 		//! @return true if colliding
 		this.hit_test_alpha_collision_with = function( fly2 )
 		{
@@ -983,13 +984,20 @@ if (!kor) kor = {};
 				// if no alpha_collision is enabled, we treat the whole collision circle area as a hit.
 				return true;
 
+			// If This colliding object has alpha_collision enabled,
+			// we sample some alpha pixels and if they are transparent, then they do not participate in the collision.
+
+			// For very small objects, we stick to one sample at its center.
+			var bSmallObject = fly2.active_collision_radius <= 10;
+			if ( bSmallObject )
+				return this.active_sprite.hit_test( fly2.absolute_pos );
+
 			// Actually we should test all points within the collision circle area.
 			// But for approximation, we just take the forward and backward points.
-			// TODO: Maybe that can be improved by checking more points once we have
-			// an optimized version of sprite's hit_test().
+			// It could be possible to make more, because we have an optimized version of sprite's hit_test() since
+			// it is using a cache to sample a pixel color.
 
-			// If This colliding object has alpha_collision enabled,
-			// we check if the closest point (via collision radius) of the 2nd object lies on an opaque or transparent pixel of This colliding object.
+			// We check if the closest point (via collision radius) of the 2nd object lies on an opaque or transparent pixel of This colliding object.
 			if ( this.active_sprite.hit_test( kor.Vec.move_towards( fly2.absolute_pos, this.absolute_pos, fly2.active_collision_radius ) ) )
 				return true;
 			// and also in the opposite looking direction.
