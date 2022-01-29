@@ -3832,7 +3832,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			return FO;
 		}
 
-		this.create_Flares = function( foParent, x, y )
+		this.create_Flares = function( foParent, x, y, scale )
 		{
 			var FO = new kor.flying_object( this, FlyingObjectKinds.Flare, false );
 			FO.set_sprite( FlyingObjectModes.normal, new kor.flying_object_mode( this.spriteFactories.Flares_factory, this.act_flares, false ) );
@@ -3840,6 +3840,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			FO.skip_collisions = true;
 			FO.pos.x = x;
 			FO.pos.y = y;
+			FO.scale = scale != null ? scale : 1;
 			FO.make_relative_to( foParent );
 			FO.calc_absolute();
 			return FO;
@@ -3891,6 +3892,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			var FO = new kor.flying_object( this, FlyingObjectKinds.Boss, false );
 			FO.set_sprite( FlyingObjectModes.normal, new kor.flying_object_mode( this.spriteFactories.Boss_factory, this.act_boss ) );
 			FO.set_sprite( FlyingObjectModes.explosion, new kor.flying_object_mode( this.spriteFactories.Explosion_A_factory, this.act_explode_mine, false, this.snd_destroy ) );
+			FO.children = new kor.ordered_dictionary();
 
 			FO.resize = 0.85;
 			FO.set_active_sprite( FlyingObjectModes.normal );	// needs .resize
@@ -3931,7 +3933,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				if ( this.energy > 0 )
 				{
 					this.energy -= this.energy_decrease_on_hit();
-					that.create_Explosion( FO_by.pos, 2, 1 );
+					that.create_Explosion( FO_by.pos, 2, 1, FO );
 					return true;
 				}
 				return false;
@@ -3947,7 +3949,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				}
 				return false;
 			}
-			FO.on_exploding = function() { that.boss_died(); }
+			FO.on_exploding = function() { this.release_children(); that.boss_died(); }
+			FO.on_releasing = function() { this.release_children(); }
 
 			FO.time_for_next_shot = this.timer.time + 500;
 			FO.time_for_next_enemy_launch = this.timer.time + 500;
@@ -3996,7 +3999,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			// now we add a flare to make the shot look more exciting
 			FO.children = new kor.ordered_dictionary();
-			this.create_Flares( FO, 0, 0 );
+			this.create_Flares( FO, 0, 0, 1.3 );
 			FO.on_exploding = function() { this.release_children(); }
 			FO.on_releasing = function() { this.release_children(); }
 			return FO;
@@ -4040,7 +4043,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 		// explosion_size: 0 = explosion A, 1 = explosion B, 2 = explosion C
 		// scale: scaling of the sprite, just graphical
-		this.create_Explosion = function( pos, explosion_size, scale )
+		// foParent: null to have explosion stay unmoving in space. or a parent object to have explosion move with it.
+		this.create_Explosion = function( pos, explosion_size, scale, foParent )
 		{
 			var FO = new kor.flying_object( this, FlyingObjectKinds.Graphic, false );
 			FO.set_sprite( FlyingObjectModes.explosion, new kor.flying_object_mode( this.spriteFactories.Explosion_factories[ explosion_size ], this.act_explode, false, this.snd_destroy ) );
@@ -4049,6 +4053,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			FO.set_active_sprite( FlyingObjectModes.explosion, true );
 
 			FO.a_start_time = this.timer.time;
+
+			if ( foParent )
+			{
+				FO.pos = kor.Vec.scale( kor.Vec.sub( pos, foParent.absolute_pos ), scale / (foParent.resize * foParent.scale) );
+				FO.make_relative_to( foParent );
+			}
+
 			FO.calc_absolute();
 			return FO;
 		}
