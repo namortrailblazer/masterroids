@@ -1,6 +1,6 @@
 /*
 kor.media.js
-version 1.0
+version 1.1
 
 
 A library with means for loading and manipulating medias like images and sounds.
@@ -286,12 +286,16 @@ if (!kor) kor = {};
 						media.elImage.onload = this.OnLoadedAll;
 						media.elImage.onerror = this.OnErrorAll;
 						media.elImage.src = media.src;
-						// TODO:
-						// we try to prevent "canvas has been tainted by cross-origin data" when trying to ctx.getImageData().
+
+						// We would like to try to prevent "canvas has been tainted by cross-origin data" when trying to ctx.getImageData().
 						// But this only works if the remote server sets the following header appropriately: Access-Control-Allow-Origin "*"
 						// https://stackoverflow.com/questions/22097747/how-to-fix-getimagedata-error-the-canvas-has-been-tainted-by-cross-origin-data
 						//media.elImage.crossOrigin = "Anonymous";
 						//media.elImage.setAttribute( 'crossOrigin', '' );
+						// Notice, since we have the images on the same url location as the game source, we do not have cross-site access and
+						// thus should not get a problems anyway.
+						// Btw., setting the crossOrigin property does not really solve because then at least chrome seems to not draw the image at all.
+
 						document.body.appendChild( media.elImage );
 					}
 					else

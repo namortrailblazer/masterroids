@@ -2,7 +2,7 @@
 <html>
 <!--
 Masterroids-JS-CANVAS
-version 1.0
+version 1.1
 
 
 Software License Agreement (BSD License)
@@ -5380,7 +5380,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			this.highScoresPanel = new HighscoresPanel( this.highScores );
 			this.highScoresPanel.elPanel.onmousedown = function() { that.OnKeyDown({ keyID: kor.Keys.keyEscape }); };
 
-			if (kor.DeviceDetection.isMobile || kor.DeviceDetection.isTablet)
+			if ( kor.DeviceDetection.isMobile )
 			{
 				this.navigationControls.activate_mode( "left" );
 				this.UpdateMainMenu();

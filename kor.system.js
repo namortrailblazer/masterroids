@@ -1,6 +1,6 @@
 /*
 kor.system.js
-version 1.0
+version 1.1
 
 
 Some system or browser related class facilities.
@@ -55,7 +55,7 @@ if (!kor) kor = {};
 	Device detection utilities
 
 	Notice, they are not 100% accurate and not future-proof,
-	but we just need it to detect if to display the navigation controls
+	but we just need it to detect if to display the navigation controls.
 
 ========================================================
 */
@@ -64,7 +64,7 @@ if (!kor) kor = {};
 	{
 		isTablet: !!navigator.userAgent.match(/(iPad|SCH-I800|xoom|kindle|ASUS)/i),
 
-		isMobile: !!navigator.userAgent.match(/(iPhone|iPod|blackberry|android|htc|lg|midp|mmp|mobile|nokia|opera mini|palm|pocket|psp|sgh|smartphone|symbian|treo mini|Playstation Portable|SonyEricsson|Samsung|MobileExplorer|PalmSource|Benq|Windows Phone|Windows Mobile|IEMobile|Windows CE|Nintendo Wii)/i) && !this.isTablet
+		isMobile: !!navigator.userAgent.match(/(iPhone|iPod|blackberry|android|htc|lg|midp|mmp|mobile|nokia|opera mini|palm|pocket|psp|sgh|smartphone|symbian|treo mini|Playstation Portable|SonyEricsson|Samsung|MobileExplorer|PalmSource|Benq|Windows Phone|Windows Mobile|IEMobile|Windows CE|Nintendo Wii)/i) || this.isTablet
 	}
 
 
