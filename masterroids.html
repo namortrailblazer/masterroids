@@ -2991,7 +2991,9 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		//! Last comet died, so the level is finished. We go on to the next level, or a boss comes.
 		this.level_finished = function()
 		{
-			if ( this.game_level % this.boss_every_nth_level_fn() == 0 )
+			var boss_frequency = this.boss_every_nth_level_fn();
+			if ( boss_frequency > 0 &&		// 0 means to never create a boss
+				 this.game_level % boss_frequency == 0 )
 			{
 				this.level_boss_start();
 				return;
@@ -3011,7 +3013,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			this.bossStrengthPanel.show( false );
 			this.bossStrengthPanel.reset();
 
-			// when boss was killed, start next level (like in start_finished on the bottom)
+			// when boss was killed, start next level (same way as in start_finished)
 			++this.game_level;
 			this.level_start();
 		}
@@ -3231,7 +3233,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.max_enemies_present = function() { return (this.difficulty == "easy" ? 1 : 20); };
 		this.missile_smoke_trail_step_sqr = 10 * 10;	// square of pixel distance between 2 smoke clouds
 		this.missile_smoke_trail_max_rotation = 0.009;
-		this.boss_every_nth_level_fn = function() { return this.static_boss_every_nth_level; }
+		this.boss_every_nth_level_fn = function() { return this.static_boss_every_nth_level; }	// if this returns 0, it means to never create a boss
 		if ( this.crazy_fun_mode )
 		{
 			this.mine_appear_delay = function() { return 5000 * Math.random() + (this.difficulty == "easy" ? 40 * 1000 : 4000); }
@@ -5724,7 +5726,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.OnDebugBossEveryNthLevel = function( e )
 		{
 			that.static_boss_every_nth_level--;
-			if ( that.static_boss_every_nth_level <= 0 )
+			if ( that.static_boss_every_nth_level < 0 )
 				that.static_boss_every_nth_level = that.default_boss_every_nth_level * 2;
 
 			if ( that.gameSession )
