@@ -3985,9 +3985,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			//var orientation = Math.PI + 0.5 * Math.PI * (Math.random() - 0.5);
 			var orientation = Math.PI + this.boss_shot_spread_angle_in_level() * Math.sin( Math.PI * this.timer.time * 0.0001 + shot_index );
 			FO.a_v_velocity = kor.Vec.from_orientation( orientation, this.boss_shot_max_speed_in_level() );
-			// we don't add speed of boss because it looks nicer for the spread of shots flying around and for human players to predict.
-			//if ( foBoss.a_v_velocity )
-			//	FO.a_v_velocity = kor.Vec.add( FO.a_v_velocity, foBoss.a_v_velocity );
+			// Maybe not adding speed of boss would look nicer for the spread of shots flying around at the same speed and so be more predictable for human players.
+			// But it is can also look strange when the boss gets faster at higher levels and his shots almost have the same speed. So I think I better stick to the usual addition.
+			if ( foBoss.a_v_velocity )
+				FO.a_v_velocity = kor.Vec.add( FO.a_v_velocity, foBoss.a_v_velocity );
 			FO.calc_absolute();
 
 			FO.score_on_avoided = 250;
