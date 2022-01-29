@@ -1,6 +1,6 @@
 /*
 kor.ui.js
-version 1.0
+version 1.1
 
 
 A library with simple user interface means, aimed on but not limited to
@@ -51,6 +51,20 @@ kor.system.js
 
 var kor;
 if (!kor) kor = {};
+
+
+
+	kor.CssUtils =
+	{
+		/*! @param regex make sure to have this one non-greedy so that other
+			class names are not touched. Especially have in mind that the className property
+			contains multiple space-separated class names.
+		*/
+		ReplaceClassName: function( el, regex, replaceWith )
+		{
+			el.className = el.className.replace( regex, replaceWith );
+		}
+	}
 
 
 
@@ -125,7 +139,7 @@ if (!kor) kor = {};
 				return;
 
 			if( this.focused_menu_item_index >= 0 )
-				this.menu_items[this.focused_menu_item_index].className = "menu-item-unfocused";
+				kor.CssUtils.ReplaceClassName( this.menu_items[this.focused_menu_item_index], /menu-item-\S*/, "menu-item-unfocused" );
 
 			if( index >= this.menu_items.length )
 				index = -1;
@@ -133,7 +147,7 @@ if (!kor) kor = {};
 			this.focused_menu_item_index = index;
 
 			if( index >= 0 )
-				this.menu_items[index].className = "menu-item-focused";
+				kor.CssUtils.ReplaceClassName( this.menu_items[index], /menu-item-\S*/, "menu-item-focused" );
 		}
 
 		this.onkey = function( e )
