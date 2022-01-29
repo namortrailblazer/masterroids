@@ -1,7 +1,7 @@
 Masterroids-JS-CANVAS
-version 1.0
+version 1.1
 
-Copyright (c) 2009-2021, Roman Komary
+Copyright (c) 2009-2022, Roman Komary
 All rights reserved.
 
 License:
@@ -9,6 +9,7 @@ License:
 See accompanying license file.
 
 Some sounds and some images like the starsmap and waveflare are not by me. Thanks go to whoever made those.
+For the Quarren Coyote Ship model where the boss rendering was based on, thanks go to ravensky20 from free3d.com.
 
 
 
@@ -54,6 +55,9 @@ Beware not to shoot a mine when it is too near to you. It will destroy you, too.
 
 An alien enemy ship appears from time to time. It will fly towards you and shoot at you.
 Hint: You can eliminate an enemy's shot with your own shots.
+
+Sometimes at the end of a level, a boss spacecraft appears flying and shooting around and launching enemies.
+Beware the strong explision when it gets destroyed.
 
 
 Team mode can be enabled so that players cannot destroy each other.

@@ -7,7 +7,7 @@ version 1.1
 
 Software License Agreement (BSD License)
 
-Copyright (c) 2009-2021, Roman Komary
+Copyright (c) 2009-2022, Roman Komary
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
@@ -287,7 +287,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		<div><span class="header">enemies:</span><span id="StatisticsPanel_EnemiesCount" class="data"></span></div>
 		<div><span class="header">players:</span><span id="StatisticsPanel_PlayersCount" class="data"></span></div>
 		<div><span class="header">bots:</span><span id="StatisticsPanel_BotsCount" class="data"></span></div>
-		<div class="header">size of universe:</div><div id="StatisticsPanel_Resolution" class="data"></div>
+		<div><span class="header">universe:</span><span id="StatisticsPanel_Resolution" class="data"></span></div>
 	</div>
 
 	<div class="sep"></div>
@@ -3872,7 +3872,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			FO.score_on_destroy = 0;
 
 			FO.avoid_distance = function() { return this.active_collision_radius * 1.8; }
-			FO.retreat_distance = function() { return this.active_collision_radius * 0.9; }	// a retreat distance where ships shall fly away otherwise they stay too long inside the transparent alpha areas of the boss within the collision_radius and have the shield on all the time until exhausted
+			FO.retreat_distance = function() { return this.active_collision_radius * 0.93; }	// a retreat distance where ships shall fly away otherwise they stay too long inside the transparent alpha areas of the boss within the collision_radius and have the shield on all the time until exhausted
 
 			FO.max_energy = this.boss_max_energy_in_level();
 			FO.energy = FO.max_energy;

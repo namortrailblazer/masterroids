@@ -8,7 +8,7 @@ A library with classes related to math and calculation.
 
 Software License Agreement (BSD License)
 
-Copyright (c) 2009-2011, Roman Komary
+Copyright (c) 2009-2022, Roman Komary
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
