@@ -254,7 +254,7 @@ if (!kor) kor = {};
 			return a;
 		}
 
-		//! @return a Uint8ClampedArray of 4 values being RGBA each in range 0 to 255.
+		//! @return a Uint8ClampedArray of pixels with each being 4 values RGBA each in range 0 to 255.
 		this.get_image_alpha_at = function( x, y )
 		{
 			if ( this.image_data === null )		// indicates not to try ctx.getImageData again.
@@ -266,6 +266,9 @@ if (!kor) kor = {};
 
 			var w = canvas.width;
 			var h = canvas.height;
+
+			if ( x < 0 || x >= w || y < 0 || y >= h )
+				return 0;
 
 			var i = Math.floor( y ) * 4 * w + Math.floor( x ) * 4;
 
