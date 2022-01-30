@@ -684,7 +684,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		<div class='menu_small_text'>Changing prevents saving new highscores.</br>Resetting requires starting a new game.</div>
 		<table width='100%' cellpadding='0' cellspacing='3' border='0'>
 			<tr>
-				<td style='width: 20em;'>boss every n'th level:</td>
+				<td>one comet per level:</td>
+				<td width='50' class='menu-item-unfocused' data-menu-item-id='optDebugOneCometPerLevel'>off</td>
+			</tr>
+			<tr>
+				<td>boss every n'th level:</td>
 				<td class='menu-item-unfocused' data-menu-item-id='optDebugBossEveryNthLevel'>0</td>
 			</tr>
 		</table>
@@ -3146,7 +3150,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.player_shield_increase = function() { return this.crazy_fun_mode ? 0.00009 * 2 : 0.00009 };
 		this.player_shield_decrease = function() { return this.crazy_fun_mode ? 0.0002 / 4 : 0.0002 };
 
-		this.level_num_comets = function() { return 4 + Math.round( (this.game_level - 1) * 0.2 + (this.players_count - 1) ); };	// number of initial comets at level start
+		this.level_num_comets = function() { return theApp.one_comet_per_level ? 1 : 4 + Math.round( (this.game_level - 1) * 0.2 + (this.players_count - 1) ); };	// number of initial comets at level start
 		this.green_extras_start_level = function() { return this.crazy_fun_mode ? 1 : (this.difficulty == "easy" ? 3 : 8); };
 		this.green_extras_count_in_level = function() { return this.crazy_fun_mode ? 10 * this.players_count : this.players_count; };
 		this.blue_extras_start_level = function() { return this.crazy_fun_mode ? 1 : (this.difficulty == "easy" ? 2 : 4); };
@@ -5317,7 +5321,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		this.magnet_mode = false;
 		this.team_mode = false;		// TODO should be put in a settings object
 		this.sounds_on = true;			// TODO should be put in a settings object together with engine statistics on/off. And GameSession.sounds_on has to be adopted, too, then (currently is inited by theApp.sounds_on and updated by OnSoundsOnOff)
-		this.static_boss_every_nth_level = this.default_boss_every_nth_level;	// TODO should probably also be put in a settings object
+		this.static_boss_every_nth_level = this.default_boss_every_nth_level;
+		this.one_comet_per_level = false;
 
 		this.preload = function()
 		{
@@ -5452,6 +5457,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			this.MainMenu.delegatesClicked["continue"].add( this.OnGameContinue );
 			this.MainMenu.delegatesClicked["resetDebugOptions"].add( this.OnResetDebugOptions );
 			this.MainMenu.delegatesClicked["optDebugBossEveryNthLevel"].add( this.OnDebugBossEveryNthLevel );
+			this.MainMenu.delegatesClicked["optDebugOneCometPerLevel"].add( this.OnDebugOneCometPerLevel );
 
 			this.MainMenu.showSection( "MainMenuPaused", false );
 			this.MainMenu.show( true );
@@ -5505,6 +5511,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				try { if (this.optionsCookie.value.navigation_controls_mode != null) this.navigationControls.activate_mode( this.optionsCookie.value.navigation_controls_mode ); } catch( e ) {  }
 				try { if (this.optionsCookie.value.statisticsPanel_on != null) this.statisticsPanel.show( this.optionsCookie.value.statisticsPanel_on ); } catch( e ) {  }
 				try { if (this.optionsCookie.value.boss_every_nth_level != null) this.static_boss_every_nth_level = this.optionsCookie.value.boss_every_nth_level; } catch( e ) {  }
+				try { if (this.optionsCookie.value.one_comet_per_level != null) this.one_comet_per_level = this.optionsCookie.value.one_comet_per_level; } catch( e ) {  }
 				this.UpdateMainMenu();
 			}
 			else
@@ -5710,6 +5717,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			this.MainMenu.menu_items_by_menu_id["optSwitchNavigationControls"].innerHTML = this.navigationControls.active_mode;
 			this.MainMenu.menu_items_by_menu_id["optStatisticsOnOff"].innerHTML = this.statisticsPanel.is_visible() ? "on" : "off";
 			this.MainMenu.menu_items_by_menu_id["optDebugBossEveryNthLevel"].innerHTML = this.static_boss_every_nth_level;
+			this.MainMenu.menu_items_by_menu_id["optDebugOneCometPerLevel"].innerHTML = this.one_comet_per_level ? "on" : "off";
 
 			var bUsingDebugOptions = this.CheckCurrentlyUsingDebugOptions();
 			kor.CssUtils.ReplaceClassName( this.MainMenu.menu_items_by_menu_id["menuHighscores"], /decor-\S*/, bUsingDebugOptions ? "decor-eliminated" : "decor-normal" );
@@ -5734,7 +5742,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		//! Notice, this is just the application setting. It does not take a running game session into account.
 		this.AppUsingDebugOptions = function()
 		{
-			return that.static_boss_every_nth_level != that.default_boss_every_nth_level;
+			return	that.static_boss_every_nth_level != that.default_boss_every_nth_level ||
+					that.one_comet_per_level;
 		}
 
 		this.CheckCurrentlyUsingDebugOptions = function()
@@ -5746,6 +5755,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		{
 			// reset debug options in app settings
 			that.static_boss_every_nth_level = that.default_boss_every_nth_level;
+			that.one_comet_per_level = false;
 
 			// reset debug options also in a running game session
 			if ( that.gameSession )
@@ -5754,6 +5764,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			that.UpdateMainMenu();
 
 			that.optionsCookie.value.boss_every_nth_level = that.static_boss_every_nth_level;
+			that.optionsCookie.value.one_comet_per_level = that.one_comet_per_level;
 			that.optionsCookie.store();
 		}
 
@@ -5776,6 +5787,24 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			that.UpdateMainMenu();
 
 			that.optionsCookie.value.boss_every_nth_level = that.static_boss_every_nth_level;
+			that.optionsCookie.store();
+		}
+
+		this.OnDebugOneCometPerLevel = function( e )
+		{
+			that.one_comet_per_level = !that.one_comet_per_level;
+
+			if ( that.gameSession )
+			{
+				// In a running game session, we mark debug enabled and do never turn it off so that once debug gets activated, and only if
+				// it is for short, we do not save the player highscore progress at all (just for that game session though).
+				if ( !that.gameSession.usingDebugOptions )
+					that.gameSession.usingDebugOptions = that.AppUsingDebugOptions();
+			}
+
+			that.UpdateMainMenu();
+
+			that.optionsCookie.value.one_comet_per_level = that.one_comet_per_level;
 			that.optionsCookie.store();
 		}
 
