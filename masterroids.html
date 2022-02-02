@@ -3268,12 +3268,12 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			this.enemy_appear_delay = function() { return 3000 * Math.random() + (this.difficulty == "easy" ? 30 * 1000 : 2000); }
 			this.time_for_next_enemy_shot = function() { return this.timer.time + 500 * Math.random() + (this.difficulty == "easy" ? 2000 : 100); }
 		}
-		this.boss_max_speed_in_level = function() { return Math.min( 0.08 + this.game_level * 0.002, 0.5 ); };
+		this.boss_speed_in_level = function() { return this.difficulty == "easy" ? Math.min( 0.03 + this.game_level * 0.001, 0.1 ) : Math.min( 0.05 + this.game_level * 0.002, 0.25 ); };
 		this.boss_max_energy_in_level = function() { return 500 * this.players_count + (this.difficulty == "easy" ? 200 : 400) + Math.min( this.game_level * 5, 1000 ); }
-		this.boss_shot_max_speed_in_level = function() { return (this.difficulty == "easy" ? 0.2 : 0.25) + Math.min( this.game_level / 500, 0.1 ); }
-		this.boss_shot_spread_angle_in_level = function() { return 0.22 * Math.PI; }
-		this.time_for_next_boss_shot = function() { return this.timer.time + 200 + (this.difficulty == "easy" ? 500 : 200) + (this.difficulty == "easy" ? 8 : 3) * Math.max( 100 - this.game_level, 0 ); }
-		this.time_for_next_boss_launching_enemy = function() { return this.timer.time + 1000 + ((this.difficulty == "easy" ? 6000 : 1000) + 5000 * Math.random() + 20 * Math.max( 100 - this.game_level, 0 )) / this.players_count; }
+		this.boss_shot_speed_in_level = function() { return (this.difficulty == "easy" ? 0.1 : 0.25) + Math.min( this.game_level / 500, 0.1 ); }
+		this.boss_shot_spread_angle_in_level = function() { return 0.25 * Math.PI; }
+		this.boss_time_for_next_shot = function() { return this.timer.time + (this.difficulty == "easy" ? 1500 : 500) + (this.difficulty == "easy" ? 15 : 10) * Math.max( 100 - this.game_level, 0 ); }
+		this.boss_time_for_next_enemy = function() { return this.timer.time + (this.crazy_fun_mode ? 200 : 2000) + ((this.difficulty == "easy" ? 8000 : 3000) + 20 * Math.max( 100 - this.game_level, 0 )) / this.players_count; }
 		this.boss_launching_enemy_start_speed = function() { return 0.2; }
 
 		this.comets_count = 0;					//!< current number of comets flying around
@@ -3932,12 +3932,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			r.top -= FO.active_collision_radius;
 			FO.pos = kor.Vec.interpolate( kor.Rect.LT( r ), kor.Rect.RT( r ), Math.random() );
 
-			var max_speed = this.boss_max_speed_in_level();
-			var min_speed = max_speed * 0.9;
-			var speed = (max_speed - min_speed) * Math.random() + min_speed;
-
 			// TODO: maybe adjust boss flying animation to be more attacking when going forward
-			FO.a_v_velocity = kor.Vec.from_orientation( Math.PI + Math.PI * 0.5 * (Math.random()- 0.5), speed );
+			FO.a_v_velocity = kor.Vec.from_orientation( Math.PI + Math.PI * 0.5 * (Math.random()- 0.5), this.boss_speed_in_level() );
 			FO.a_start_time = this.timer.time;
 			FO.velocity_influence_by_collision = 0;
 			FO.calc_absolute();
@@ -4012,7 +4008,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 			//var orientation = Math.PI + 0.5 * Math.PI * (Math.random() - 0.5);
 			var orientation = Math.PI + this.boss_shot_spread_angle_in_level() * Math.sin( Math.PI * this.timer.time * 0.0001 );
-			FO.a_v_velocity = kor.Vec.from_orientation( orientation, this.boss_shot_max_speed_in_level() );
+			FO.a_v_velocity = kor.Vec.from_orientation( orientation, this.boss_shot_speed_in_level() );
 			// Maybe not adding speed of boss would look nicer for the spread of shots flying around at the same speed and so be more predictable for human players.
 			// But it is can also look strange when the boss gets faster at higher levels and his shots almost have the same speed. So I think I better stick to the usual addition.
 			if ( foBoss.a_v_velocity )
@@ -5137,7 +5133,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				that.create_Boss_Shot( FO, 2 );
 				that.create_Boss_Shot( FO, 3 );
 				that.create_Boss_Shot( FO, 4 );
-				FO.time_for_next_shot = that.time_for_next_boss_shot();
+				FO.time_for_next_shot = that.boss_time_for_next_shot();
 			}
 
 			// check when to launch another enemy
@@ -5148,7 +5144,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 				//	// just for fun
 				//	that.create_Explosion( foEnemy.pos, 2, 1 );
 
-				FO.time_for_next_enemy_launch = that.time_for_next_boss_launching_enemy();
+				FO.time_for_next_enemy_launch = that.boss_time_for_next_enemy();
 			}
 		}
 
