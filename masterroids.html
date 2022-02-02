@@ -3941,7 +3941,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			FO.score_on_destroy = 0;
 
 			FO.avoid_distance = function() { return this.active_collision_radius * 1.8; }		// within this distance, a simulated player will not accelerate any further towards its aim.
-			FO.retreat_distance = function() { return this.active_collision_radius * 0.93; }	// a retreat distance where ships shall fly away otherwise they stay too long inside the transparent alpha areas of the boss within the collision_radius and have the shield on all the time until exhausted
+			FO.retreat_distance = function() { return this.active_collision_radius; }			// a retreat distance where ships shall fly away otherwise they stay too long inside the transparent alpha areas of the boss within the collision_radius and have the shield on all the time until exhausted. Best to have the collision radius and not smaller otherwise the ship has the shield too long on.
 
 			FO.max_energy = this.boss_max_energy_in_level();
 			FO.energy = FO.max_energy;
