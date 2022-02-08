@@ -20,7 +20,7 @@ are permitted provided that the following conditions are met:
   list of conditions and the following disclaimer in the documentation and/or
   other materials provided with the distribution.
 
-* Neither the name Roman Komary nor the names of its contributors may be
+* Neither the names Roman Komary, Paul Komary nor the names of its contributors may be
   used to endorse or promote products derived from this software without
   specific prior written permission from Roman Komary.
 
@@ -38,14 +38,26 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 <head>
 <title>Masterroids-JS-CANVAS - The Help</title>
 <style type="text/css">
+	/* This is here just to compensate for dark mode browser plugins which usually tweak this which usually is ok but disturbing for the game.
+	Also the colors and opacities spread around in here are marked important solely to compensate for dark mode plugins. */
+	html *
+	{
+		background-color: transparent !important;
+		color: #bbb !important;
+	}
+	html
+	{
+		background-color: transparent !important;
+		color: #bbb !important;
+	}
 	body
 	{
 		width: 100%;
 		margin: 0px;
 		padding: 0px;
-		background-color: #000;
+		background-color: #000 !important;
 		font: 11px Verdana;
-		color: #bbb;
+		color: #bbb !important;
 	}
 </style>
 </head>
@@ -82,28 +94,36 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		position: relative;
 		left: -370px;
 	}
-	.chead .title .version
-	{
-		width: 730px;
-		text-align: right;
-		position: relative;
-		top: -30px;
-	}
 	.chead .title a
 	{
 		text-decoration: underline;
 		color: #bbb;
 	}
+	#HelpTitle .title .version
+	{
+		width: 730px;
+		text-align: right;
+		position: relative;
+		top: -39px;
+		/*left: -340px;*/
+		/*font-weight: normal;*/
+		color: #656862 !important;
+	}
+	#HelpTitle .title .version .name
+	{
+		color: #7e827a !important;
+	}
 </style>
 
-<div class="chead">
+<div id="HelpTitle" class="chead">
 	<table width="0"><tr><td width="50%"></td><td width="0%">
 		<div class='title'>
 			<div><img src="title.png"/></div>
 			<!--<div>MASTERROIDS-JS-CANVAS</div>-->
 			<div class="version">
 				v1.1<br/>
-				by Roman Komary [namortrailblazer]
+				by <span class="name">Roman Komary</span> [<span class="name">namortrailblazer</span>]<br/>
+				in collaboration with <span class="name">Paul Komary</span>
 			</div>
 		</div>
 
