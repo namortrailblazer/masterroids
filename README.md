@@ -4,6 +4,8 @@ version 1.1
 Copyright (c) 2009-2022, Roman Komary
 All rights reserved.
 
+Created by Roman Komary in collaboration with Paul Komary.
+
 License:
 3-clause BSD license
 See accompanying license file.

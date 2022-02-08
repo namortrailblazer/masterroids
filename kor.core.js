@@ -21,7 +21,7 @@ are permitted provided that the following conditions are met:
   list of conditions and the following disclaimer in the documentation and/or
   other materials provided with the distribution.
 
-* Neither the name Roman Komary nor the names of its contributors may be
+* Neither the names Roman Komary, Paul Komary nor the names of its contributors may be
   used to endorse or promote products derived from this software without
   specific prior written permission from Roman Komary.
 

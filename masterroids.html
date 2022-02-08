@@ -20,7 +20,7 @@ are permitted provided that the following conditions are met:
   list of conditions and the following disclaimer in the documentation and/or
   other materials provided with the distribution.
 
-* Neither the name Roman Komary nor the names of its contributors may be
+* Neither the names Roman Komary, Paul Komary nor the names of its contributors may be
   used to endorse or promote products derived from this software without
   specific prior written permission from Roman Komary.
 
@@ -37,7 +37,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <head>
 <title>Masterroids-JS-CANVAS - The Game</title>
-<meta name="keywords" content="roman,komary,masterroids,asteroids,thexagon,x-agon,game,javascript,canvas" />
+<meta name="keywords" content="roman,paul,komary,masterroids,asteroids,thexagon,x-agon,game,javascript,canvas" />
 <script type="text/javascript" src="kor.core.js"></script>
 <script type="text/javascript" src="kor.calc.js"></script>
 <script type="text/javascript" src="kor.system.js"></script>
@@ -438,13 +438,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		position: relative;
 		left: -370px;
 	}
-	.cmenu .menu_title .version
-	{
-		width: 730px;
-		text-align: right;
-		position: relative;
-		top: -30px;
-	}
 	.cmenu .menu_title a
 	{
 		text-decoration: underline;
@@ -533,6 +526,20 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 		white-space: nowrap;
 		touch-action: manipulation;		/* prevent browser double tap zoom on touch devices */
 	}
+	#MainMenuWithTitle .menu_title .version
+	{
+		width: 730px;
+		text-align: right;
+		position: relative;
+		top: -39px;
+		/*left: -340px;*/
+		/*font-weight: normal;*/
+		color: #656862 !important;
+	}
+	#MainMenuWithTitle .menu_title .version .name
+	{
+		color: #7e827a !important;
+	}
 	#MainMenu .frame { position: relative; z-index: 6; }
 	#MainMenu .click-through
 	{
@@ -563,7 +570,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 			<!--<div>MASTERROIDS-JS-CANVAS</div>-->
 			<div class="version">
 				v1.1<br/>
-				by Roman Komary [namortrailblazer]
+				by <span class="name">Roman Komary</span> [<span class="name">namortrailblazer</span>]<br/>
+				in collaboration with <span class="name">Paul Komary</span>
 			</div>
 		</div>
 
